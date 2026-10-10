@@ -1,0 +1,350 @@
+---
+description: Project-wide design direction and quality gates for distinct, brand-led, research-informed, responsive, accessible web interfaces. Prevent generic AI-template aesthetics and unsubstantiated website content.
+alwaysApply: true
+---
+
+# Design.mdc — Brand-Led Web Design, Anti-Slop Standards & Research Workflow
+
+## 0. Mission, scope, and order of precedence
+
+You are acting as a senior product designer, UX architect, art director, and frontend engineer—not a landing-page template generator. Build a website or application that feels intentionally designed for **this specific product, brand, audience, and use case**. The result must look and function like a considered professional product, not a generic AI-generated starter site.
+
+**These are working rules, not a request to add all the listed visual trends.** Use this rule on tasks involving UI, UX, layout, copy, frontend components, visual assets, marketing pages, dashboards, and design reviews. On backend-only tasks, do not modify UI simply to satisfy this document.
+
+Priority: (1) explicit user and project requirements, (2) verified existing brand guidelines/assets and design tokens, (3) accessibility, functional and security constraints, (4) the design-specific rules below, and (5) optional contemporary trends. Preserve existing purposeful designs; never perform a surprise rebrand. Where this file overlaps the project's security or production-readiness rules, satisfy both, and never trade away security, truthfulness, accessibility, or usability for aesthetics.
+
+**Non-negotiable outcome:** clear information hierarchy, credible product-specific content, recognizable visual identity, useful interaction patterns, responsive behavior, and evidence-based design decisions. Visual novelty without a user benefit is not a success.
+
+## 1. Mandatory workflow BEFORE generating or redesigning a page
+
+### 1.1 Inspect the actual project first
+
+- Locate the design system, style guide, logo, images, fonts, tokens, Tailwind configuration, global CSS, component library, routing, existing screens, and any brand constraints.
+- Identify the actual type of interface: marketing website, ecommerce, enterprise dashboard, admin console, fintech, healthcare, portfolio, editorial site, consumer application, etc. **Do not use a consumer-marketing layout for a data-heavy application.**
+- Identify users, their primary task, desired action, content density, accessibility needs, brand personality, product differentiators, and platform limitations.
+- Inspect neighboring pages so new work belongs to the same visual system. Reuse existing deliberate patterns rather than generating a second inconsistent design language.
+- Do not invent a company history, features, partnerships, performance claims, clients, certifications, compliance status, review scores, pricing, user counts, testimonials, product screenshots, or awards.
+- If essential business/brand facts are missing, ask a concise question when necessary. Otherwise proceed with clearly labeled assumptions and do not publish invented factual content.
+
+### 1.2 Write a lightweight internal design brief
+
+Before substantial design work, establish:
+
+1. **Audience and goal:** who is using the page; the one primary action or task.
+2. **Brand:** 3–5 adjectives that describe the desired personality, grounded in project assets/context.
+3. **Content hierarchy:** primary message, proof, supporting information, secondary actions.
+4. **Visual thesis:** a one-sentence concept unique to this website (e.g., “an editorial, precision-focused interface built around real portfolio evidence”).
+5. **Design vocabulary:** typography roles, palette roles, grid, imagery/art direction, surface treatment, motion philosophy.
+6. **Constraints:** framework, assets, breakpoints, accessibility, performance, localization, and existing components.
+
+For major net-new pages, quickly consider **two or three materially different page compositions** and choose the best one based on audience and content. Do not generate three cosmetic color variations of one template. Explain the selected direction briefly if the user requests design reasoning.
+
+### 1.3 Research real references; never guess what is currently trending
+
+When browsing/research tools are available, **visit current examples before initiating a major new site, homepage, rebrand, or design-system redesign**. Revisit the Figma trend guide when relevant; the industry evolves, so treat the 2026 trends later in this file as a dated baseline, not eternal facts.
+
+Research at least **3–5 distinct relevant examples** for a substantial redesign, including at least **two real, functioning websites** where possible; a screenshot gallery or static mockup alone is not implementation evidence. Choose comparables for the same industry, target user, or interaction challenge rather than the most visually popular examples.
+
+For each candidate, evaluate the *actual design technique*, not merely the overall “vibe”:
+- Brand/voice and who the site serves.
+- Hero composition, grid logic, whitespace, reading order, typography and contrast.
+- Navigation model, submenu behavior, mobile treatment, primary/secondary CTAs.
+- Information architecture, proof, product imagery, real interaction details.
+- Footer structure, depth of content, mobile and keyboard accessibility.
+- Motion purpose, performance risks, and implementation practicality.
+
+Make a brief **reference ledger** when presenting a new design direction: `URL | specific pattern observed | why it fits | what NOT to copy | date checked`. Observe current pages if access permits; do not claim to have checked, opened, or verified a site that was not actually accessible. If browsing is unavailable, state the limitation, use known references as inspiration prompts, and avoid claims about their current appearance or trends.
+
+**Inspiration is not replication:** Do not copy competitors' layouts pixel-for-pixel, screenshots, illustrations, images, brand assets, CSS, copyrighted text, or proprietary interactions. Synthesize principles into a distinct brand-led composition. Check image/font licenses and attribution requirements.
+
+## 2. Where to look for inspiration — use each source for a specific job
+
+These are the user's preferred discovery sources. The role descriptions tell you what to seek, **not** permission to copy their designs.
+
+| Source | URL | Research for | Do not do |
+|---|---|---|---|
+| **Superhero** | https://www.superhero.com.au/ | Real-world financial/product-site storytelling; clear product positioning; action-oriented hierarchy; trust-building information architecture; discover how product demos, CTA language, risk/disclosure content, and navigation support financial decisions. | Copy its identity, financial claims, colors, screenshots, wording, or industry-specific compliance structure into unrelated products. |
+| **Navbar Gallery** | https://www.navbar.gallery/ | Navigations: static/sticky bars, dropdowns, megamenus, search, tabs, breadcrumbs, full-screen menus, responsive wayfinding. | Use a visually impressive but confusing menu or hide critical navigation for novelty. |
+| **Footer Design** | https://www.footer.design/ | Footer hierarchy, sitemap groupings, secondary conversion, utility links, contact details, disclosures, brand sign-off, large editorial footers. | Build a massive empty footer with no meaningful destinations. |
+| **Behance** | https://www.behance.net/search/projects/web%20design | In-depth brand systems, multi-page projects, typographic directions, art direction, page compositions, responsive explorations. | Assume a beautiful concept image is a working, accessible production site. |
+| **Dribbble** | https://dribbble.com/search/web-design | Micro-layouts, component details, type treatments, hero concepts, cards, visual exploration. | Reproduce single-screen “shots” without testing real text, interactions, and small screens. |
+| **Awwwards / UI design** | https://www.awwwards.com/websites/ui-design/ | High-craft editorial approaches, distinctive interactions, experimental storytelling, advanced use of imagery and motion. | Sacrifice load time, navigation, keyboard access or usability merely to look award-worthy. |
+| **Lapa Ninja** | https://www.lapa.ninja/ | Real-world landing page structures, above-the-fold messaging, CTA placement, industry-specific hierarchy, section sequencing. | Clone the common template shared by many SaaS examples. |
+| **Made in Webflow / UI design** | https://webflow.com/made-in-webflow/ui-design | Working site examples, responsive component behavior, interaction ideas, feasible layouts and transitions. | Assume a cloneable example is appropriate for this project's framework, brand, license, or performance budget. |
+| **Figma trend guide** | https://www.figma.com/resource-library/web-design-trends/ | Currently documented visual/UI trends and their appropriate use cases; regularly recheck the article and compare with recent real sites. | Implement every trend, or claim that a dated trend list represents the latest state without checking. |
+
+**Research order:** industry/product peers → Figma trends for current context → Behance/Awwwards for overarching visual language → Lapa Ninja for page architecture → Navbar Gallery for navigation → Footer Design for closing structure → Dribbble for bounded details → working live sites for validation. Tailor this order to the task; do not browse all sites for a tiny component edit.
+
+Use precise search terms such as `[industry] website design 2026`, `[product type] editorial landing page`, `[industry] accessible pricing page`, `[product] dashboard data density`, `[brand tone] typography`, `[navigation requirement] navbar`, or `[audience] mobile experience`. Filter for fresh work when currency matters; distinguish publication date from last-modified or indexed date.
+
+## 3. Anti-template / anti-“vibe-coded” pattern register (all 30 screenshot points)
+
+The supplied screenshot lists 30 common telltales. **They are warning signals and review prompts, not universal design laws.** A real product can legitimately use cards, icons, gradients, dark colors, or motion. The problem is unmotivated, repeated, interchangeable execution. Apply the following rules:
+
+| # | Screenshot pattern | Enforce this better alternative |
+|---|---|---|
+| 1 | **Harsh gradients** | Default to restrained surfaces. No generic purple→blue hero or decorative conic/radial glow. Use an intentional gradient only when justified by brand, imagery, or hierarchy, with accessible text contrast. |
+| 2 | **Lucide icons everywhere** | Do not decorate each heading/card with the same generic outline icon. Use icons only when they clarify navigation, state, function or meaning; choose a coherent icon family and sizes. Lucide is acceptable for actual UI controls. |
+| 3 | **Pure white on every section** | Build purposeful surface hierarchy using brand-tuned neutrals, paper/off-white, ink, tinted sections, photography or other art direction. Pure white remains appropriate for focused, clean interfaces. |
+| 4 | **Rainbow coloring** | Avoid a different accent on every feature card. Use a controlled palette with semantic colors and consistent roles. Multiple vibrant colors are appropriate only when supported by brand or information encoding. |
+| 5 | **Default drop shadows** | Prefer layout, whitespace and borders to convey grouping. Use restrained, physically coherent elevation only where layering or interaction actually requires it. No glowing every card. |
+| 6 | **Three equal feature cards in a row** | Do not default to a universal three-column features strip. Choose layout based on content: narrative split, comparison, annotated product demo, editorial grid, case study, table, timeline or asymmetric feature sequence. |
+| 7 | **Emojis as a design system** | Use real images, purposeful custom illustrations or consistent icons. Emojis only when audience, voice and context genuinely demand a playful style. Never substitute random emoji for interface clarity. |
+| 8 | **Liquid glass / glassmorphism everywhere** | No indiscriminate blurred floating panels. Use translucency only with readable contrast, supported browsers and a specific functional purpose. |
+| 9 | **Heavy-handed em dashes** | Avoid repetitive AI-like rhetorical punctuation and stylized copy. Use natural, varied sentence structure; ordinary punctuation is not prohibited. |
+| 10 | **Inter / Geist / Space Grotesk as reflex** | Do not pick the same trendy font automatically. Choose typography for brand character, legibility, licenses and script coverage. Existing brand fonts take priority; these fonts remain legitimate options when appropriate. |
+| 11 | **Colored left border on every card** | Avoid repeated accent sidebars that do not encode status. Use layout, typography and spacing first; reserve sidebars for actual categories, hierarchy, citation or state. |
+| 12 | **Fake testimonials** | Never invent customers, reviews, quotes, logos, ratings or outcomes. Use verified proof; otherwise omit the section or add a clearly marked content placeholder for the owner. |
+| 13 | **Default bento grid** | No gratuitous mismatched tiles to imply innovation. Use bento layouts only if item priority, content shape and reading order justify them; preserve mobile semantics. |
+| 14 | **Decorative terminal window** | Avoid fake command-line screenshots unless the product genuinely provides developer workflows and the shown code/commands are accurate. Prefer real application demonstrations. |
+| 15 | **“It's not X, it's Y”** | Avoid formulaic marketing copy. Say exactly what the product does, for whom, and what practical problem it solves. |
+| 16 | **Checkmark bullets everywhere** | Use actual checklists only for checked requirements/features; otherwise use descriptive content, tables, illustrations, semantic lists, numbers, or no marker. |
+| 17 | **Exactly three pricing tiers by default** | Price architecture must reflect actual packaging. Support one plan, two plans, usage-based pricing, custom quotes, enterprise contact or comparisons as warranted. Never fabricate plans or prices. |
+| 18 | **No real product demo** | Prefer authentic UI captures, anonymized real product data, working interactive previews, diagrams or honest walkthroughs. Never depict imagined features as functioning production UI. |
+| 19 | **Everything softly rounded** | Use a deliberate corner-radius system based on brand and control type. Square, restrained, mixed or rounded corners are valid when consistent; no universal oversized `rounded-3xl`. |
+| 20 | **Purple/black everywhere** | Choose brand-specific colors with audience/domain fit. Do not auto-apply purple-on-charcoal “AI startup” styling. Purple or dark themes are valid if genuinely part of brand or task. |
+| 21 | **No skeleton loaders** | Every async view needs intentional loading behavior. Use skeletons where layout is predictable and delays justify them; otherwise progress indicators or concise status messages may be better. |
+| 22 | **Radial background orbs** | No gratuitous blurred circles behind every hero. Use imagery, composition, typographic scale, color blocking or real product visuals for focal interest. |
+| 23 | **Dot-grid texture** | Do not sprinkle generic dots, grids or mesh textures as filler. Use a patterned background only where it has a meaningful relationship to brand or content. |
+| 24 | **Sparkle icons** | Do not use sparkle/star icons as a generic indicator of “AI”, quality or magic. Describe a real capability and choose meaningful imagery. |
+| 25 | **Animated arrows everywhere** | Movement should clarify next steps or interaction; no perpetual arrow bounce or gratuitous carousel/CTA motion. |
+| 26 | **No Terms of Service** | For public products/services, provide a clear Terms link and required content when applicable. **Never invent legally binding terms**: use approved copy or mark it as pending legal review. |
+| 27 | **No Privacy Policy** | Provide an accessible Privacy link and applicable notices when collecting personal data. Do not fabricate policy text, data-processing statements or consent requirements. Coordinate with compliance rules. |
+| 28 | **Hover animations on everything** | Hover should indicate interactivity, not entertain. Use restrained transitions on interactive controls and visible keyboard-focus alternatives. Never rely on hover-only information. |
+| 29 | **Neon coloring** | Avoid fluorescent accents unless truly brand-led and legible. Bright palettes and retrofuturist styling are optional artistic directions, not default SaaS themes. |
+| 30 | **Generic pastel palette** | Do not automatically choose lavender/sky/peach/mint. Color should express the specific brand; pastels are fine for appropriate audiences and concepts. |
+
+### Fast anti-slop refusal test
+
+Before accepting a major new design, ask:
+1. Could changing only the logo, product name and accent color make this an unrelated startup site? If yes, redesign the composition/content.
+2. Is visual interest coming from meaningless glows, dots, sparkles or cards rather than real product substance? If yes, remove filler.
+3. Is every section an interchangeable `heading + subtitle + three cards + CTA`? If yes, change information architecture.
+4. Are icons, charts, testimonials, screenshots or numbers decorative rather than honest and meaningful? If yes, replace or omit.
+5. Is the design coherent without animations, desktop-only effects and placeholder copy? If no, solve fundamentals first.
+6. Does the site unmistakably reflect this brand's audience, product and voice? If no, iterate before declaring done.
+
+## 4. 2026 Figma trends: evaluate, do not blindly implement
+
+**Dated source baseline:** Figma, “Top Web Design Trends for 2026” — https://www.figma.com/resource-library/web-design-trends/. On substantial new design work, consult its latest available version (and compare with fresh real sites). The following is a decision framework, **not** a mandatory style bundle.
+
+| Trend from Figma | When it can add real value | Guardrails / reject when |
+|---|---|---|
+| 1. **3D & immersive elements** | Product exploration, physical goods, spatial data, demonstrable interaction. | Heavy WebGL is gratuitous, breaks mobile performance, lacks a fallback, or hides important content. |
+| 2. **Experimental navigation** | Small creative brands, narrative experiences and audiences that benefit from exploration. | Primary pathways become undiscoverable. Prioritize familiar patterns in high-stakes/utility apps. |
+| 3. **Vibrant color palettes** | Expressive consumer, culture, lifestyle or distinctly bold brands. | Palette feels randomly colorful or fails contrast; do not default to neon. |
+| 4. **Bold typography** | Strong brand voice, editorial storytelling, high-clarity hero/message hierarchy. | Body text becomes hard to read, decorative type delays content, or every word competes for attention. |
+| 5. **Dark mode** | Focus-intensive products, media, developer tools, genuine user preference. | Was added merely to look premium; text and status contrast fail. Respect existing theme preference. |
+| 6. **Motion & animation** | Transitions that reinforce hierarchy, feedback, continuity, and task progress. | Nonessential perpetual loops, motion sickness risks, excessive bundle size. |
+| 7. **Gamified design** | Helpful onboarding, education, progress, optional engagement. | Manipulates decisions or distracts from consequential tasks. |
+| 8. **Neumorphism** | Rare, highly controlled tactile details with clear affordances. | Low-contrast buttons, indistinguishable input states, fake depth everywhere. |
+| 9. **Retrofuturism** | A brand with genuine historical/creative affinity for the style. | Chrome/neon/pixel art pasted onto an unrelated professional service. |
+| 10. **Maximalism** | Visual storytelling, art, fashion, entertainment and intentional high-energy brands. | Information hierarchy, scannability, accessibility and performance collapse. |
+| 11. **Collage** | Distinctive editorial, artistic, culture or personal storytelling. | Arbitrary cutouts/stickers masquerade as brand identity. |
+| 12. **Neo-brutalism / anti-design** | Provocative, experimental brands with a clear art direction. | Confusing controls, poor contrast or inaccessible typography mistaken for edginess. |
+| 13. **Sustainable web design** | All projects: lean assets/code, longevity, purposeful interactions, accessibility. | Never optional; use performance budgets and inclusive design. |
+
+Figma also discusses AI chatbots, voice-activated interfaces and progressive lead nurturing. **These are product-feature options, not required visual trends.** Add AI/voice features only with a real user need, appropriate privacy/consent, tested capability and a user-requested scope. Never add a fake chatbot to make a page seem modern.
+
+**Trend selection rule:** For a new visual direction, identify at most **one primary** expressive trend and **one supporting** trend, if any. Give each a brand/user justification. Defaults are quality typography, strong hierarchy, honest product evidence, restrained interaction and high usability—none requires novelty effects.
+
+## 5. Design system: consistency without generic sameness
+
+### 5.1 Tokens and existing conventions
+
+- **Inspect and use existing project tokens first** (`tailwind.config.*`, CSS custom properties, theme files, design-system components). Never invent Tailwind classes, pretend tokens exist, or override the design system ad hoc.
+- If tokens are missing and scope warrants it, create semantic primitives: `color.background`, `color.surface`, `color.text`, `color.text-muted`, `color.border`, `color.brand`, `color.action`, `color.focus`, `color.success`, `color.warning`, `color.danger`; `font.*`; `space.*`; `radius.*`; `shadow.*`; `motion.*`; `container.*`.
+- Use CSS variables or the framework's existing theming conventions. Avoid unmaintainable inline styling; dynamic CSS custom properties are acceptable when appropriate. Do not introduce a new styling library solely for aesthetics.
+- Base spacing on a coherent **4px/8px rhythm** but allow optical adjustments for typography, icons and exceptional layouts. Do not use random values everywhere or mandate one rigid gap for every context.
+- Build a small family of intentional components (buttons, fields, tabs, cards if useful, navigation, alerts, empty states), not several nearly identical components with inconsistent geometry.
+- Use contrast, text size, spacing, grouping and content—not arbitrary decorative lines—to create hierarchy.
+
+### 5.2 Typography and editorial craft
+
+- Select typefaces for brand, legibility, licenses and language support. Default to **one strong primary family** plus an optional purposeful second family, not two just because a template does.
+- Define roles: display, H1/H2/H3, body, small/meta, controls and numeric data. Use a restrained modular type scale, variable `clamp()` sizing where helpful, deliberate line height, and consistent tracking.
+- Avoid every headline being oversized, black and centered. Adjust by subject, page type, language length and viewport.
+- Body content should be comfortable to read (commonly ~16–18px at standard desktop zoom, with suitable line height); keep long-form measures around **45–75 characters** where appropriate.
+- Use readable line breaks; don't force `<br>` for a marketing composition that breaks at mobile widths. Do not capitalize, all-caps, or letter-space entire paragraphs for effect.
+- Write real, concise, specific copy. Avoid filler: “Revolutionize”, “Seamlessly”, “Unlock your potential”, “Empower your journey”, “Built for the future”, and formulaic “not X, but Y”. Replace with real actions, constraints, results or benefits that are actually supported.
+
+### 5.3 Palette, material and depth
+
+- Start with the **existing brand palette**. If no brand exists, build a palette from a defined visual thesis and audience—not from AI default color presets.
+- Default to a neutral foundation and **one primary action/accent** with separate functional status colors. A brand can legitimately have multiple accents if their roles are explicit and consistent.
+- Avoid default purple-black, multicolor pastel, neon, harsh gradients, liquid glass and glow surfaces. Conditional exceptions require a reason connected to the brand, not the tool's taste.
+- Build light/dark themes only when needed; make both fully legible and test state colors in each.
+- Use no more than a purposeful set of corner radii and shadow levels. Every radius/shadow should communicate surface type or elevation rather than “modernity”.
+
+### 5.4 Grids, spacing, composition
+
+- Define readable content boundaries and consistent gutters. Use CSS Grid and Flexbox rather than absolute positioning for primary content.
+- Favor **rhythm and variation**: dense then airy, typographic then visual, narrative then evidence. Keep underlying alignment intentional and visible even in asymmetric layouts.
+- Choose a hero format that fits the actual message: clear editorial typography + honest image, compact utility introduction, split layout with working product view, search-led task entry, or visual narrative. **Never default blindly to a centered hero with a badge, vague two-line headline and two buttons.**
+- Do not mechanically repeat `three cards in a row` for services, features, testimonials and benefits. Reflect actual content counts and importance.
+- Prefer product-specific layouts over generic templates: real workflow diagrams, before/after states, authentic data tables, comparison matrices, case narratives, annotated screenshots, relevant demonstrations and real forms.
+- On dashboards, prioritize legibility, density controls, navigation persistence, filter discoverability, table semantics and actionable information. Do not make every data feature a decorative card.
+
+### 5.5 Imagery, icons and data visualization
+
+- Prefer authentic, permissioned brand photography, real product screenshots, meaningful illustrations, factual graphics or intentional typography over generic 3D blobs and unrelated stock imagery.
+- If a real screenshot is unavailable, clearly label any **illustrative mockup**. Do not render imagined product features as current functionality.
+- Use optimized media with meaningful alt text when informative, empty alt when decorative, appropriate aspect ratios, focal point cropping and responsive variants.
+- Icons are for meaning and usability. Keep stroke, weight, size and optical alignment consistent; do not make random icon grids into a fake feature story.
+- Charts must show real or explicitly labeled sample data, axes/units where relevant, accessible labels and correct comparisons. Never fabricate KPIs or performance improvements.
+
+## 6. Component and page-specific standards
+
+### Navigation
+
+- Study https://www.navbar.gallery/ for the **type of menu matching the site's information architecture**: simple bar, dropdown, mega menu, side nav, tabs, search, breadcrumbs, announcement rail, etc.
+- Keep top-level labels clear, destinations useful, and active states visible. Support mouse, keyboard, touch, assistive technology and small viewports.
+- Mega menus are for truly extensive hierarchies; avoid them for five links. Use a sticky header only when it helps browsing and does not consume excessive vertical space.
+- Mobile menus must open/close predictably, be keyboard operable, manage focus, support escape/back behavior as appropriate, and not trap users behind an overlay.
+
+### Hero and above the fold
+
+- Explain **what the product/service is** and **what the user can do** in the first meaningful view; maintain a concrete action or clear next step.
+- Distinctive design should derive from proposition + information order + art direction, not from a gradient globe.
+- Prefer authentic hero proof: visualized product, actual outcomes (if evidenced), task entry, product photo or useful storytelling.
+- Design for variable viewport heights; don't require users to scroll through 700px of empty hero to learn what the product does.
+
+### Features, services, proof and demos
+
+- Structure sections by real questions users have: How does it work? What do I get? Why trust it? What does it cost? What happens next?
+- Avoid long stacks of interchangeable feature cards. Use meaningful demonstrations, diagrams, workflows, examples, comparisons or focused prose instead.
+- Use **verified** logos, testimonials, metrics, awards, compliance references, customers, and case studies only. If absent, demonstrate value honestly with the product itself or label missing proof for follow-up.
+- Use representative sample data only when clearly marked as illustrative and safe to show.
+
+### Pricing and conversion
+
+- Show only actual offering structures; do not fabricate three plans or highlight a “most popular” tier without evidence.
+- Make the total price/terms legible. Clarify recurring periods, limitations, what happens after the CTA, and appropriate disclaimers.
+- Keep form fields proportionate to the user's task; use proper labels, validation, keyboard/autofill support and clear post-submit feedback.
+- Avoid false urgency, deceptive button text, prechecked consent, hidden fees or visual dark patterns.
+
+### Footer
+
+- Inspect https://www.footer.design/ for examples of **useful footer architecture**, not for copyable layouts.
+- Include logical navigation categories, support/contact and owned social links where actually available, plus copyright/company details and Terms/Privacy/Cookie links **when required or applicable**.
+- Use real destinations; do not insert dead links or dummy legal policies. If approval is required, create a clearly tracked requirement rather than pretending legal text exists.
+- The footer should be a meaningful final navigation/conversion opportunity and visually consistent with the site, not an enormous empty black area.
+
+### Application states and behavior
+
+- For each async feature, design **initial/loading, empty, error, success, offline/network-failure and permission-denied states** as relevant. Avoid blank pages, infinite spinners and nonfunctional placeholders.
+- Skeletons are optional but recommended for data-rich interfaces when the shape is stable; use readable state labels for unknown-duration work. Respect reduced motion.
+- Define button/input/link states: default, hover (where supported), focus-visible, active/pressed, disabled, pending and validation/result states as relevant.
+- Preserve users' input on recoverable failures. Show next steps after errors. Avoid double submissions; provide real feedback.
+
+## 7. Accessibility is a design foundation, not a final touch
+
+Target **WCAG 2.2 AA** where applicable and use semantic HTML. At minimum:
+
+- Meet text contrast **4.5:1** for ordinary text and **3:1** for large text; relevant UI indicators and meaningful graphics generally require **3:1** non-text contrast. Do not rely on color alone to distinguish states.
+- All controls must be navigable and usable with keyboard; show visible focus, proper labeling, skip links where relevant and logical heading/navigation order.
+- Support 200% zoom and reflow to narrow screens without hiding content or creating unnecessary horizontal scroll. Respect user font scaling.
+- Aim for generous touch targets (typically **44×44 CSS px** when layout permits) and adequate spacing; assess WCAG 2.2 target-size requirements rather than assuming every tiny icon is fine.
+- Provide form labels, clear instructions, error association, sufficient time and predictable interactions. Do not use placeholder text as the only label.
+- Support `prefers-reduced-motion`; never make essential comprehension depend on animation or hover. Provide pause controls for qualifying auto-moving content.
+- Check accessible names for icons, cards, disclosures, dialogs and navigation. Ensure focus is returned after closing overlays.
+- Avoid decorative effects that compromise text readability or hide content in forced-colors/high-contrast settings.
+
+## 8. Responsive composition, not desktop shrinkage
+
+- Design mobile, tablet and desktop as **intentional compositions** sharing the same system. Test representative widths (e.g., 320/360/390/768/1024/1440px and larger if relevant); adjust to actual project requirements.
+- Mobile navigation, reading order, horizontal overflow, table strategies, fixed CTAs, touch targets, typography and image cropping require independent review.
+- Use content-driven breakpoints rather than forcing all sections into the same responsive grid. Let CSS grid/flex wrapping handle variable content naturally.
+- A desktop editorial split may become stacked on mobile; preserve semantic order and priority rather than hiding half the message.
+- Test real text lengths, localization, empty states, validation messages, reduced motion, portrait/landscape and small-height viewports.
+- Sticky/fixed elements must not obscure controls or significantly reduce usable screen space.
+
+## 9. Motion: functional and deliberate
+
+- Design motion to signal cause/effect, hierarchy, continuity or meaningful status. Prefer quick transitions with stable easing over perpetual animation.
+- Use an explicit motion vocabulary (for example fast feedback / standard state change / occasional deliberate reveal) and make the chosen durations consistent.
+- If animation is not improving comprehension, feedback or the brand's specific story, do not add it.
+- Do not use bouncing CTAs, auto-scrolling carousels, scroll hijacking, parallax layers, animated cursors or decorative text morphing by default.
+- Transform/opacity animation is generally preferable to layout-thrashing effects. Do not ship heavyweight motion libraries for minor hover transitions.
+- Set appropriate `prefers-reduced-motion` fallbacks, avoid seizure-triggering flashes, and maintain control usability without animation.
+
+## 10. Production-minded implementation and performance
+
+- Reuse the project's components, tokens, framework, routes and build process. Avoid unnecessary package installation and theme-system duplication.
+- Implement semantic DOM and responsive CSS; keep structure maintainable. Prefer design tokens and component abstractions over scattered inline style blocks and arbitrary one-off classes.
+- Use appropriately sized WebP/AVIF images where supported, image dimensions/aspect ratios, lazy loading below the fold and intentional hero-image loading. Do not load 4K photos for tiny cards.
+- Be judicious with web fonts: few families/weights, correct subsets, sensible fallbacks, `font-display` strategy and licensing.
+- Limit layout shift, unnecessary network requests, render-blocking dependencies and expensive scroll effects. Evaluate Core Web Vitals (LCP, CLS, INP) where tooling is available rather than guessing that the page is fast.
+- Confirm loading/empty/error and focus interactions in the actual browser when tools are available. If no browser/device testing occurred, explicitly say **not verified**.
+- Do not silently rewrite brand identity, legal content, service descriptions or core user flows during visual cleanup.
+
+## 11. Required quality gates for each substantial UI task
+
+### Gate A — Before implementation
+- [ ] Existing project brand assets/styles and adjacent pages inspected.
+- [ ] User/audience/task and product-specific visual thesis established.
+- [ ] Appropriate references considered; current sources consulted **when tools permit**.
+- [ ] Relevant trends justified; no effect included solely because it is fashionable.
+- [ ] Content, product data, images and social proof distinguished as verified, illustrative or missing.
+
+### Gate B — After first implementation
+- [ ] Real, specific content; no generic SaaS headlines and filler.
+- [ ] Brand-specific composition; not copy-paste `badge → centered hero → 3 cards → bento → 3 prices → CTA`.
+- [ ] Clear typography hierarchy, palette roles, token consistency and well-considered rhythm.
+- [ ] Useful navigation and appropriate footer; real links and clear CTAs.
+- [ ] Real product evidence or transparently labeled visualizations; no invented testimonials.
+- [ ] No unnecessary gradients, purple glows, radial orbs, dots, sparkles, terminal mockups or hover theatrics.
+- [ ] Important empty/loading/error/permission states implemented where relevant.
+- [ ] Responsive layouts and keyboard/focus behavior accounted for.
+- [ ] Legal/privacy requirements not hidden or fabricated.
+
+### Gate C — Visual review and iteration
+
+If browser/screenshot/test capabilities are available:
+1. View at mobile, tablet and desktop widths; inspect the actual render, not only the source code.
+2. Test real content, long titles, no data, failed network requests, focus order and touch interactions.
+3. Compare against the **brief and reference principles**, not pixel-copy similarity.
+4. Fix clipping, contrast, hierarchy, spacing, awkward line breaks, overused card patterns and unintentional template signals.
+5. Recheck after fixes. A design review is incomplete until the resulting page is inspected again.
+
+If visual tools are not available, do a source-level review, state which visual/device checks remain unverified, and provide a targeted manual test list rather than claiming perfect appearance.
+
+### Gate D — Final self-assessment
+
+Score each category from **0–5** (0 = absent, 5 = excellent). Aim for at least **4** in each category before calling a substantial design complete; do not average away a failure in usability or truthfulness.
+
+| Category | Ask |
+|---|---|
+| Brand distinctiveness | Would this still feel like our brand after the logo was hidden? |
+| Content credibility | Are claims, examples, metrics and social proof accurate and specific? |
+| Information architecture | Can a first-time visitor find and understand the primary task quickly? |
+| Editorial craft | Are typography, spacing, proportions and imagery deliberately art-directed? |
+| Interaction quality | Do menus, controls and feedback behave coherently without gimmicks? |
+| Accessibility | Can keyboard, screen-reader, mobile and low-vision users complete key tasks? |
+| Responsive quality | Does every key layout adapt without overflow or loss of meaning? |
+| Performance & robustness | Are assets lean and UI states/loading resilient? |
+
+**Do not declare “production-ready,” “pixel-perfect,” “WCAG-compliant,” or “tested across browsers” unless that claim is supported by actual checks.**
+
+## 12. What to report to the user after a meaningful design change
+
+Keep the summary concise and factual:
+
+1. **Design direction:** the visual thesis and target audience fit.
+2. **Inspiration used:** links plus precisely which principles were borrowed; include inspection date if researched live.
+3. **What changed:** layout, typography, color/tokens, components, imagery, copy and interaction.
+4. **Anti-slop review:** generic patterns avoided or intentionally retained with reason.
+5. **Quality checks:** exact widths/devices, accessibility checks, browser tests and performance tools *actually* used.
+6. **Open items:** real assets/content/claims, legal review, missing screens, unverified tests and any tradeoffs.
+
+For small changes, this can be two or three sentences. Do not overwhelm the user with a full trend essay on every button edit.
+
+---
+
+## Reference integrity and scope notes
+
+- The **30 anti-template warning signals** above come from the user-supplied image headed “30 reasons your site looks vibecoded.” They are interpreted as heuristics, not objectively validated rules.
+- The starting principles (avoid generic gradient/glass aesthetics, enforce spacing and design tokens, prefer structured hierarchy, and use semantic frontend code) are adapted and expanded from the user's original `Design.mdc`.
+- The named design trends are adapted from Figma's web-design-trends guide, accessed for this rule in **October 2026**. Always refresh trend research when tools are available; do not assume this document stays current indefinitely.
+- The inspiration URLs are research starting points only. Some galleries may block automated browsing or show illustrative work that differs from production behavior.
+- Accessibility, truthful content, and user task completion outrank stylistic trends or awards-gallery novelty.

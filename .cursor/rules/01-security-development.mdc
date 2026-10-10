@@ -1,0 +1,153 @@
+---
+description: "Secure-by-default engineering, threat reviews, safe authentication, permissions, input validation, secret management, API/file security, privacy, and post-feature security audits."
+alwaysApply: true
+---
+
+# Application Security Rules
+
+> Adapted into continuous development rules from **TEKNICAL, The Security Prompt Pack** (sections 1–14, pages 3–19). These rules apply to the existing project and whatever language, framework, database, and deployment platform it actually uses. Do not assume a specific stack.
+
+## 0. Non-negotiable agent behavior
+
+- **Security is part of each feature's definition of done.** Implement features with secure defaults, then review the changed code for weaknesses before reporting completion. Review high-risk changes a second time after fixes.
+- Before editing, inspect related routes, authentication, database policies, integrations, configurations, and tests. Trace the complete data flow **client -> server -> authorization -> storage -> response**.
+- Never rely on frontend controls as a security boundary. Assume clients, IDs, parameters, and request bodies can be forged or tampered with.
+- Preserve established security controls and minimize code changes. Do not silently disable validation, authentication, authorization, logging, tests, or certificate verification to make a feature work.
+- Prefer existing, maintained framework and provider security mechanisms over custom cryptography, custom authentication, or ad-hoc filtering.
+- Do not reveal, echo, copy into generated files, or request real passwords, tokens, private keys, API secrets, or sensitive production records. Use placeholders and variable names.
+- Never make destructive production changes, purge data, rotate active credentials, alter firewall/network access, or run intrusive tests against live systems without explicit approval.
+- If project context is insufficient, state the assumption and identify the safest option; ask before a decision that changes the trust model or compromises data.
+- **Do not claim a security control was tested, an exploit was blocked, or the application is secure unless the relevant evidence exists.** Explicitly distinguish implemented, tested, and still requiring external verification.
+
+## 1. Input validation at every trust boundary
+
+- Find all inputs: forms, JSON bodies, query strings, route parameters, headers, search, webhooks, uploaded files, and external API data.
+- For every input, validate **server-side** before use: required/optional fields, allowed type, string lengths, numeric ranges, dates/formats, enumerations, array sizes, identifiers, and unexpected fields.
+- Keep client-side validation for usability; mirror all security- and integrity-relevant constraints on the backend. Reject invalid requests with appropriate 4xx errors and non-sensitive messages.
+- Normalize or sanitize only as appropriate to the data type. Preserve legitimate text; do not rely on deleting SQL keywords or `<script>` strings to prevent injection.
+- Apply contextual output encoding when rendering user-generated content. Never treat untrusted text as executable HTML, JavaScript, SQL, shell code, or templates.
+- Test malformed, missing, oversized, unexpected, duplicate, and boundary-value inputs by calling the backend directly, not merely submitting the UI form.
+
+## 2. Secrets, credentials, and integration keys
+
+- Never hardcode secret API keys, DB passwords, private keys, access/refresh tokens, webhook signing secrets, or signing/encryption keys in source, tests, comments, examples, or browser bundles.
+- Put server secrets in a server-side environment variable or an approved secret manager; access through the framework's server-only configuration. Public/publishable keys may be client-side **only after confirming their intended public scope and associated access controls**.
+- Make sure `.env` and equivalent local secret files are ignored by Git. Keep a `.env.example` with **names and dummy placeholders only**. Configure values separately for development, staging, and production.
+- Check for secrets in client code, build output, committed configuration, test fixtures, logs, and Git history when relevant; **redact discoveries in reports**. If a secret was committed, mark it compromised and request provider-side rotation; deleting a commit is not sufficient.
+- Apply least privilege to service credentials, separate environments, restrict allowed hosts/scopes, and verify webhook signatures.
+- Do not overwrite existing environment files or rotate/revoke keys without approval.
+
+## 3. Authentication and sessions
+
+- Use an established identity service or framework-approved authentication implementation where possible. Never create hardcoded/fake production users or bypass login during normal flows.
+- Hash passwords with Argon2id, bcrypt, or an equivalent appropriate password-hashing scheme; never store plaintext or fast unsalted hashes. Use the provider's secure password and breached-password policies; the source's **8-character minimum** is a floor, not an assurance of strength.
+- Use short-lived access/session credentials with documented expiry. The source suggests **15–30 minute access tokens** and **7–30 day refresh tokens** as illustrative ranges; adjust for the app's risk and provider design.
+- Prefer secure, `HttpOnly`, `Secure`, and appropriate `SameSite` session cookies; avoid storing sensitive bearer tokens in `localStorage` or `sessionStorage`. Evaluate CSRF protection for cookie-authenticated actions.
+- Ensure logout revokes/invalidate sessions server-side where supported, not just UI state. On password reset/change and high-risk account changes, revoke or rotate affected sessions as appropriate.
+- Rotate session identifiers on login; protect against fixation/hijacking. Offer "log out everywhere" when supported. Monitor anomalous sessions; do not rigidly bind sessions to IP addresses without evaluating mobile networks and privacy.
+- Reset links/tokens must be cryptographically unpredictable, single-use, short-lived (source example: **15–30 minutes**), and validated server-side. Use generic responses that do not disclose whether an email/account exists.
+- Limit failed login, signup, and reset attempts; consider MFA for sensitive data and privileged users.
+
+## 4. Authorization and ownership (deny by default)
+
+- For **every** endpoint, API route, server action, background task, database policy, and file-access path, determine: is authentication required, and is this caller allowed to perform **this operation on this specific resource**?
+- Enforce resource ownership/tenant isolation and role or attribute permissions on the server or database. Hiding links, buttons, or pages is **not** access control.
+- Return 401 for unauthenticated requests and an appropriate 403/404 policy for unauthorized resource access without leaking the resource. Keep behavior consistent.
+- Explicitly protect administrative operations and sensitive exports with server-side role checks. Never accept privilege level, tenant ID, or owner ID from an untrusted client as proof of authority.
+- Test IDOR/broken-object-level authorization: User A attempts to read/update/delete User B's records, files, or IDs; verify denial for list and bulk endpoints too.
+- Prefer opaque/unpredictable public identifiers if appropriate, but **never use UUIDs as a substitute for authorization**.
+- Implement reusable middleware/policies for consistent authorization and regression tests.
+
+## 5. Prevent injection, XSS, CSRF, and redirect misuse
+
+- Use parameterized SQL, prepared statements, or safe ORM query APIs for **all** user-influenced database operations. Never concatenate inputs into queries, dynamic SQL identifiers, shell commands, or templates.
+- Escape untrusted content according to output context. Avoid unsafe HTML/DOM sinks (`innerHTML`, `dangerouslySetInnerHTML`, `document.write`) and `eval`; if rich HTML is an actual requirement, use a maintained sanitizer with a defined allowlist.
+- Treat URL params, fragments, `document.referrer`, external messages, and third-party data as untrusted inputs. Check DOM-based XSS paths as well as server-rendered output.
+- For cookie-based state-changing requests, enforce appropriate CSRF defenses (framework tokens, same-site policy and/or verified Origin as suitable); `SameSite` alone is not a universal substitute.
+- Restrict post-login, deep-link, and callback redirects to validated in-app destinations or a strict external allowlist. Never blindly follow a user-supplied return URL.
+- Block path traversal, SSRF, command injection, and template injection where relevant. Never fetch arbitrary user-supplied URLs or execute user-supplied shell strings without strict constraints.
+
+## 6. File uploads and downloads (if present)
+
+- Inspect every upload route: permitted types, content checks, maximum size/count, quota, storage visibility, scan/re-encode requirements, and resource ownership.
+- Validate extension **and actual content/signature** when applicable; allowlist necessary formats. Set size limits on the server/reverse proxy, not just the UI. The source gives **5 MB images / 25 MB documents** as starting examples; adapt to product requirements.
+- Generate server-controlled random storage names. Never trust path components or filename extensions from users. Prevent double-extension, path-traversal, decompression-bomb, and executable-upload risks.
+- Store uploads outside executable web roots or in private object storage. Require authentication/authorization before reads, previews, edits, and downloads; use limited-scope signed URLs when appropriate.
+- Re-encode images and strip unnecessary metadata when applicable; scan document/executable risks according to file types and deployment architecture. Serve downloads with safe `Content-Type`, `nosniff`, and suitable `Content-Disposition`.
+- Limit concurrent uploads, frequency, processing time, and per-account storage. Test malformed files, MIME mismatches, oversize, unauthorized downloads, and upload failures.
+
+## 7. Rate limits and abuse resistance
+
+- Identify login, signup, password resets, contact forms, public search, file uploads, email dispatch, payment calls, AI/LLM endpoints, exports, and other billable or intensive actions.
+- Apply per-user/account and/or per-IP limits **server-side**, using a shared/distributed limiter when multiple instances exist; avoid trusting client-provided IP headers without proxy configuration.
+- Use the source's ranges as **tunable examples**, not hardcoded universal requirements: authentication **5–10 requests/minute/IP**, reads **60–100/minute/user**, writes **20–30/minute/user**, uploads **5–10/minute/user**, with stricter controls on expensive operations.
+- Respond with HTTP 429 and `Retry-After` when appropriate. Prefer progressive throttling and anti-automation measures to permanent account lockouts that can be weaponized for denial of service.
+- Add quotas/budget ceilings for expensive third-party APIs and AI operations. Record suspicious patterns without recording credentials or full private payloads.
+
+## 8. HTTPS, browser security, configuration
+
+- Require HTTPS for deployed client/API traffic and `wss://` for WebSockets; prevent mixed content. Redirect HTTP to HTTPS at the right infrastructure layer.
+- Set appropriate transport and browser headers: HSTS (after verifying HTTPS/subdomain readiness), Content-Security-Policy, `X-Content-Type-Options: nosniff`, anti-framing via CSP `frame-ancestors`/`X-Frame-Options`, `Referrer-Policy`, and suitable `Permissions-Policy`.
+- Configure cookies with appropriate `Secure`, `HttpOnly`, `SameSite`, path, domain, and lifetimes; never store plaintext sensitive data in cookies.
+- Restrict CORS to intended origins, methods, and headers; never combine credentialed requests with wildcard origins. Remember: **CORS is not an authentication or authorization control**.
+- Ensure production debug mode is off; prevent verbose exceptions, public admin/debug endpoints, default accounts/passwords, development middleware, insecure provider defaults, and open databases.
+- Restrict DB/network access, enforce TLS, apply least privilege and row-level security or equivalent tenant isolation, and protect backups.
+
+## 9. Error handling and accidental data disclosure
+
+- Return friendly, controlled error messages. Never expose stack traces, filesystem paths, SQL/schema details, framework versions, internal configuration, or secrets in client responses.
+- Log technical exceptions on the server with correlation IDs and suitable access controls, not in browser-visible consoles or API bodies.
+- Explicitly allowlist outbound API fields. Never serialize entire DB models by default; prevent leaking password hashes, auth tokens, admin flags, private metadata, or other users' information.
+- Cover malformed IDs, invalid types, expired sessions, missing permissions, failed dependencies, and non-existent routes in integration tests.
+
+## 10. Privacy and personal data
+
+- Inventory personal/sensitive data collected, stored, transmitted, exported, and shared with integrations; identify purpose, location, access, encryption, retention, and deletion path.
+- Minimize collection and retention. Encrypt sensitive information in transit and at rest using appropriate managed encryption/key separation. Use password **hashing**, not reversible encryption, for passwords.
+- Prevent personal data from leaking through logs, analytics, exceptions, test fixtures, notifications, and exports. Restrict access by role/tenant.
+- Where applicable, implement authenticated account/data export and deletion workflows that do not expose other users or violate retention/legal obligations. Verify deletion of related files and third-party data where feasible.
+- Identify applicable privacy obligations (e.g., GDPR/CCPA) based on actual geography and data categories. **Do not claim legal compliance solely because a code feature exists**; flag items requiring legal or organizational review.
+
+## 11. Dependencies, third-party services, and supply chain
+
+- Inspect direct and transitive dependency vulnerabilities using the ecosystem's audit tools. Treat critical/high exploitable findings as release blockers until mitigated or explicitly risk-accepted.
+- Use committed lockfiles and reproducible installs. Review Git/tarball dependencies, abandoned packages, and unmaintained components; do not mass-upgrade blindly.
+- Apply safe fixes incrementally, run tests after each change, and get approval before risky major upgrades or dependency replacements.
+- Inspect external integrations for scope, credential separation, callbacks/webhook signature validation, storage and provider security settings.
+
+## 12. Security logging, audit trails, and alerting
+
+- Log relevant events with timestamp and correlation ID: login success/failure, denied access, password/email/role changes, privileged actions, sensitive exports, suspicious upload requests, and repeated API failures.
+- Secure audit logs against unauthorized reads/tampering; define retention. Record actor, action, target, outcome, and contextual metadata **without logging passwords, tokens, full session IDs, payment data, or raw sensitive request bodies**.
+- Alert on anomalous login failures, account enumeration, suspicious cross-account access, bulk exports, password reset bursts, unusual 401/403 spikes, outages, and error/latency changes. Tune thresholds to real baselines to control false positives.
+- Monitor uptime, server errors, latency, resource exhaustion, and database health with actionable notifications.
+
+## 13. Required review workflow after each meaningful change
+
+1. Identify the changed features, entry points, data types, permissions, third-party calls, and affected trust boundaries.
+2. Review the **new or modified code and dependent paths** for: authorization, authentication, backend validation, injection/XSS/CSRF, secrets, errors/data exposure, file safety, rate limits, privacy, transport/configuration, dependencies, and auditability.
+3. Fix findings within the approved task scope, add regression tests for each applicable weakness, and run relevant lint/typecheck/tests/security checks.
+4. Re-review the repaired code because security fixes can introduce new problems. Repeat for unresolved high-impact issues; **never pronounce the project "secure" solely because automated review found no issue**.
+5. Report using this compact, evidence-based format:
+
+   - **Risk:** Critical / High / Medium / Low, with file/route and exploit scenario.
+   - **Change:** What was fixed and why, including exact files.
+   - **Verification:** Commands/tests actually run and their observed results; distinguish untested checks.
+   - **Remaining issues:** Open findings, deployment/provider-side checks, and owner decisions.
+
+## 14. Pre-launch security gate (run when asked to deploy or assess readiness)
+
+- [ ] No hardcoded or leaked secrets; `.gitignore`, configuration, and Git history reviewed.
+- [ ] Server-side validation exists for every relevant untrusted input.
+- [ ] Database access is parameterized; rendered user content is safely encoded/sanitized.
+- [ ] Authentication, session lifecycle, and account recovery have been checked.
+- [ ] Every protected endpoint verifies resource-level/tenant-level authorization.
+- [ ] CSRF, redirect, upload, and abuse vectors have been assessed where applicable.
+- [ ] API responses and browser-visible errors reveal no sensitive implementation details.
+- [ ] TLS/HTTPS, cookie security, CORS, production headers, and configuration are verified.
+- [ ] Personal data handling, retention, and exports/deletion flows are appropriately controlled.
+- [ ] Rate limits, quotas, logging, monitoring, and alerting cover exposed/high-value actions.
+- [ ] Critical/high dependency vulnerabilities and default/test credentials are addressed.
+- [ ] Risks requiring production access, live-service changes, professional review, or manual testing are explicitly identified.
+
+**Gate result:** Present PASS / FAIL / NOT APPLICABLE / NOT VERIFIED for each applicable item. A code inspection is **not** proof of real production configuration or a substitute for penetration testing.

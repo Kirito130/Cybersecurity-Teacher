@@ -1,0 +1,164 @@
+---
+description: "Production-quality application engineering: robust UX states, databases, deployment/rollback, test coverage, performance, monitoring, version control, documentation, and release readiness."
+alwaysApply: true
+---
+
+# Prototype-to-Production Engineering Rules
+
+> Adapted into continuous development rules from **TEKNICAL, Prototype vs. Production: What It Really Takes to Go Live** (10 checklist categories, pages 2–11). Use these rules throughout implementation; apply the entire release gate only when preparing a production deployment. Security-specific implementation standards are in `01-security-development.mdc`.
+
+## 0. Working approach and quality bar
+
+- Build **reliable features for real users**, not demos that only work on the author's machine. Every completed feature needs a working normal path, relevant failure and edge cases, tests, and observable behavior.
+- Inspect the repository, architecture, existing conventions, build/test scripts, runtime environment, database, and deployment setup **before** proposing changes. Respect the project's actual stack; do not introduce unrelated frameworks or infrastructure.
+- Clearly distinguish **prototype-only choices** from production-safe choices. A prototype may defer optional production work, but any gap must be surfaced; never describe it as launch-ready.
+- Prefer maintainable, simple, documented, reversible changes. Don't replace working systems or add unnecessary services for theoretical scale.
+- Never deploy, modify production infrastructure, run irreversible DB migrations, delete user data, or change billing/hosting plans without explicit approval.
+- Whenever requirements imply payments, health/financial data, minors, regulated workflows, sensitive integrations, or high traffic, elevate reliability, security, privacy, testing, and owner-review requirements.
+- A task is complete only after applicable checks run or their inability to run is stated. Never invent test results, performance numbers, deployments, backup status, or legal compliance.
+
+## 1. Identity, access, and user account flows
+
+- Implement **real authentication**, preferably through a trusted provider/library rather than fake or hardcoded login flows. Keep sessions, resets, logout, and OAuth (when offered) functional from start to finish.
+- Verify permission checks at the backend for each action and resource; protect admin features and cross-user/tenant data. Consult the companion security rule for exact controls.
+- Provide safe errors that do not disclose account existence; verify signup, email verification (when appropriate), password reset email expiry, logout, and account recovery with real integration flows or accurately document any untested external step.
+- Include rate limiting and MFA when the data and threat model require them.
+
+## 2. Secrets and environment separation
+
+- Use **different** development, staging, and production configurations, credentials, and databases. Never point tests, seeders, or local debug jobs at production by default.
+- Keep API keys, database passwords, signing keys, and webhook secrets out of code and out of Git; document **variable names**, not values, in `.env.example` and project setup instructions.
+- Ensure necessary variables are configured on the hosting platform, with least-privilege scopes. Track where owner-managed credentials must be rotated or removed when no longer used.
+- Review Git history for exposed credentials when relevant; call for rotation of any compromised value without printing it in reports.
+
+## 3. Database integrity, access, and recovery
+
+- Use a proper production database, separate from dev/test. Secure network connections, permissions, tenant/row-level isolation, TLS, and connection pooling as appropriate.
+- Define intentional schema constraints: correct column types, `NOT NULL`/required fields, `UNIQUE`, defaults, foreign keys, relationship delete behavior, and indexes for genuine query patterns.
+- Decide explicitly between cascade, restrict, soft-delete, and custom cleanup behavior for every important relationship. Avoid orphaned data and accidental large deletions.
+- Use **versioned, repeatable, reviewable migrations** instead of undocumented manual schema changes. Check compatibility with existing data and deployments; plan backfills and rollback/forward-fix strategies.
+- Make writes atomic where consistency matters; protect against duplicate submissions, retries, and partial failures using transactions and/or idempotency keys as appropriate.
+- Configure automated backups (source baseline: daily for many apps), retention, access controls, and encryption appropriate to the app. **A backup is not proven usable until a restore has been tested.**
+- Define recovery targets and actions: how failures are detected, who responds, what can be restored, and acceptable data loss/downtime. Do not claim restores or backups succeeded without evidence.
+- Prevent demo accounts, seed fixtures, or test data from being inserted into production. Review applicable data deletion/retention responsibilities.
+
+## 4. Every interface must handle five states
+
+For each data-driven screen, modal, form, and asynchronous workflow, implement and test the states that actually apply:
+
+1. **Loading:** visible progress, skeleton, spinner, or disabled action while work is in flight; do not leave a frozen blank screen. The source uses ~**200 ms** as a helpful indicator threshold.
+2. **Empty:** explain why there is no data and provide a sensible next action or navigation path.
+3. **Error:** a plain-language, non-sensitive message, recoverable flow, and retry/back/contact-support option where useful.
+4. **Success:** clear confirmation that a save, creation, delete, payment, or other action completed; distinguish optimistic UI from verified success.
+5. **Offline/network failure:** indicate connection loss, timeouts, and retry behavior. Queue/replay changes only when duplication, conflict, and data-loss risks are handled.
+
+- Keep unsaved user input intact after validation errors, timeouts, and failed saves. Prevent duplicate submissions and accidental double-click actions.
+- Validate forms in the browser **and** on the server; test missing/invalid types, very long input, special characters, and duplicate requests.
+- Use global error boundaries and server-side exception handlers as appropriate. Do not expose stack traces, raw framework errors, internal paths, or secrets in production UI.
+- Validate upload type/size and show progress or meaningful error feedback. Handle third-party API failures with sensible fallbacks and recovery paths.
+- Make the layouts work across relevant screen sizes and common browsers; verify on an actual mobile device rather than relying solely on emulation.
+
+## 5. Hosting, networking, and deployment
+
+- Ensure the deployed application works **outside localhost** with reproducible environment setup, production build, database connectivity, DNS, and HTTPS.
+- Prefer repeatable, automated deployments with CI/CD, where tests/builds must pass before release. Protect the main/release branch against unreviewed risky changes.
+- Validate the actual hosted application after deployment; a successful local build is not production verification.
+- Maintain a known-good release and an actionable **rollback** or forward-fix plan. Document how to recover from a failed application release and incompatible migration.
+- Configure the app domain (including intentional `www`/non-`www` redirects), TLS, runtime environment variables, deployment regions appropriate to users, and efficient static asset delivery/CDN where justified.
+- Define health endpoints/health checks, uptime/error alerts, and owner notification paths before live launch.
+- Evaluate hosting capacity against realistic concurrency and request patterns; do not make unsupported claims that it handles "thousands of users."
+- The source offers a **page-load target under 3 seconds on a regular connection**; measure on realistic devices/networks and report the actual result and test setup.
+
+## 6. Git, code organization, and documentation
+
+- Keep the repository in Git with descriptive commits and a working main/release branch. Prefer feature branches and review for significant/risky changes.
+- Keep `.gitignore` current: environment secrets, local credentials, dependencies, build artifacts, OS files, and other generated data. Keep lockfiles tracked.
+- Avoid giant multipurpose files, duplicated business logic, dead code, and commented-out legacy implementations. Break components/modules down when needed for clarity and testability.
+- Remove development-only console/debug output and operationally meaningless TODOs before release; track actual bugs or security gaps in issues. Keep intentional **structured production logging**—do not remove necessary observability.
+- Store large media/datasets in suitable storage rather than unnecessarily committing large binaries.
+- Maintain a usable README: purpose, architecture overview, installation, prerequisites, environment **variable names**, dev/test/build commands, migrations, and basic deployment/rollback instructions.
+- Record important operational choices (e.g. auth provider, storage, migration strategy), not just code snippets.
+
+## 7. Verification and quality-assurance coverage
+
+Before calling a feature done, choose and execute relevant checks; before launch, extend to the whole app:
+
+- **Automated:** lint/format, typecheck/build, unit tests, integration/API tests, and end-to-end tests for business-critical flows. Report exact commands, passes/failures, and skipped checks.
+- **Core journeys:** fresh signup, login, verification/reset, principal feature, edit/delete, logout, expired session, role/permission boundaries, and admin actions when offered.
+- **Negative cases:** missing fields, oversized strings, invalid types, duplicate submit, bad IDs, 404s, insufficient permissions, unauthorized cross-user resource IDs, uploads with wrong/oversized files, and third-party failures.
+- **Realistic data:** long names and descriptions, empty datasets, non-ASCII/special characters, realistic volumes, multiple related records, and representative user permission roles.
+- **Real environments:** at least two relevant browsers, a real phone/tablet when applicable, slower mobile/network conditions, and a new account that has not been used for prior tests.
+- **External integrations:** verify real delivery/callbacks safely where possible (e.g., emails, OAuth, webhooks); use provider **sandbox/test mode** for payment tests. Do not use live payment transactions or third-party production APIs without approval.
+- **Usability:** ask an uninstructed tester to try the primary flows where possible; identify points of confusion. State explicitly when human device/usability testing remains outstanding.
+- Add regression tests for repaired bugs and data-integrity/security defects so the same issue does not recur.
+
+## 8. Performance, efficiency, and growth
+
+- Use representative data and measure before optimizing. Avoid fetching full tables when a small filtered, paginated page is needed.
+- Add pagination/infinite scroll for growing collections; prevent duplicate requests and avoid unnecessary frontend re-renders.
+- Optimize images to their display dimensions, use modern formats where supported, provide dimensions to reduce layout shifts, and lazy-load noncritical assets.
+- Cache appropriately while respecting privacy and staleness; serve static assets efficiently, load fonts without blocking unnecessary rendering, and defer noncritical third-party scripts.
+- Add indexes for frequently filtered/sorted queries after checking actual query patterns; review slow queries rather than indexing every column.
+- Test with meaningful scale (source suggests **100+ records as an initial sanity check**, not as proof of large-scale capacity) and realistic concurrent usage when launch traffic warrants it.
+- Use Lighthouse/PageSpeed or similar tools when relevant; report environment, performance bottlenecks, and concrete changes instead of guesses.
+- Consider a 10x-usage scenario: identify likely bottlenecks, cost drivers, database limits, vendor quotas, and recovery strategy.
+
+## 9. Maintenance, monitoring, and support
+
+- Configure accessible structured application/error logs, exception reporting (e.g., Sentry or equivalent), and uptime alerts (e.g., UptimeRobot/Better Stack or equivalent) where appropriate.
+- Avoid logging tokens, passwords, excessive personal data, and full request payloads. Control log access and retention.
+- Create alerts for operational failures, error-rate increases, degraded latency, exhausted resources, and failing integrations; route them to a defined responsible person/channel.
+- Keep a process for reviewing dependency alerts and updates (e.g., Dependabot/ecosystem audits), applying security patches, and testing changes incrementally.
+- Periodically verify backup restores rather than assuming scheduled backups are sufficient.
+- Provide a way for users to report problems. Document the incident workflow: detection, triage, responsibility, rollback, recovery, and user communication.
+- Use privacy-conscious analytics when useful to understand product behavior. Establish a recurring operational review of errors, dependencies, user feedback, capacity, and incident patterns.
+
+## 10. Legal and compliance checks (conditional, not automatic certification)
+
+- Determine relevant jurisdictions, data categories, payment providers, target age groups, and third-party processors before asserting regulatory requirements.
+- Prepare an accurate **Privacy Policy** and **Terms of Service** covering actual behavior and data sharing; flag the need for legal review rather than inventing legally sufficient wording.
+- Review cookie consent and personal-data access/deletion workflows when applicable (e.g., GDPR). Consider children-specific laws if the app targets minors, and applicable regional privacy requirements.
+- If payments are handled, use an appropriate PCI-compliant payment processor; **do not collect or store raw card credentials** without a separately justified, audited architecture.
+- Review third-party vendors' privacy policies/data processing agreements, user-content copyright/abuse processes, app name/domain trademark concerns, and any AI-generated factual content for accuracy.
+- For healthcare, finance, or other sensitive sectors, explicitly mark any specialized legal/security/compliance work as requiring an appropriately qualified reviewer; code changes alone are not compliance certification.
+
+## 11. Per-feature delivery checklist
+
+Apply this compact review to meaningful feature work:
+
+- [ ] The real primary user flow works and appropriate server-side permissions/data checks exist.
+- [ ] Loading, empty, error, success, and offline/network handling are addressed where relevant.
+- [ ] Invalid/duplicate actions cannot silently corrupt data, create duplicate records, or lose user input.
+- [ ] Schema, migrations, data access, and cleanup are compatible with existing data.
+- [ ] Useful automated tests were added/updated and relevant checks actually ran.
+- [ ] Secrets, client errors, logs, configuration, and exposed endpoints follow the security rule.
+- [ ] Code is maintainable, and any necessary documentation/env examples are updated.
+- [ ] Known gaps, test limitations, and follow-up work are disclosed rather than hidden.
+
+When responding after implementation, use:
+
+**Implemented:** what changed and in which files.  
+**Verified:** exact test/build commands and observed results.  
+**Not verified / deferred:** manual, real-device, hosting, vendor, monitoring, or production checks.  
+**Risk / next action:** any blocker or owner decision.
+
+## 12. Full release-readiness gate — run before declaring "production-ready"
+
+For each category, record **PASS / FAIL / NOT APPLICABLE / NOT VERIFIED**, with evidence and an owner for unresolved work:
+
+| Area | Required evidence at release |
+| --- | --- |
+| Authentication & access control | Tested real login/session/recovery flows; backend resource/role permissions; abuse controls where needed. |
+| Secrets & environments | No exposed secrets; isolated dev/staging/prod credentials and DBs; hosting env configured. |
+| Data & database | Constraints/migrations/access controls; working backups and **tested restore**; no demo data. |
+| Error handling & screen states | Five states handled where applicable; recoverable failures, clear messages, safe logging. |
+| Hosting & deployment | HTTPS/domain; successful production build; CI checks; tested deployment and rollback procedures. |
+| Version control & code quality | Working release branch; clean code; valid `.gitignore`; useful README and runbook. |
+| Testing & QA | Core E2E and negative tests; browser/mobile/slow-network checks; permission/edge-case tests. |
+| Performance & optimization | Measured load/performance with representative data; pagination/asset/query efficiency. |
+| Maintenance & monitoring | Error and uptime alerts; incident/support path; patch/review cadence; backup verification. |
+| Legal & compliance basics | Applicable policies, consent/data-rights processes, payment/third-party/sector review identified. |
+
+- **Block launch** for unresolved critical security findings, missing fundamental authorization, exposed production secrets, untested destructive migration, or inability to recover indispensable user data, unless the owner explicitly chooses and documents a justified mitigation and responsible approval. Never silently waive a blocker.
+- For noncritical gaps, provide severity, impact, owner, temporary mitigation, and an explicit decision to fix, defer, or exclude as not applicable.
+- A deployed URL, a passing build, or one successful demo does **not** prove production readiness. Separate code-review evidence from live environment and human/manual verification.
