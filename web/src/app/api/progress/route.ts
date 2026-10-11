@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import {
+  isServiceRoleConfigured,
+  isSupabaseConfigured,
+} from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 import {
   fetchCloudProgress,
@@ -9,8 +12,12 @@ import {
 import { emptyProgress, type ProgressState } from "@/lib/progress-core";
 import { rateLimit } from "@/lib/rate-limit";
 
+function cloudReady() {
+  return isSupabaseConfigured() && isServiceRoleConfigured();
+}
+
 export async function GET() {
-  if (!isSupabaseConfigured()) {
+  if (!cloudReady()) {
     return NextResponse.json(
       { error: "Supabase is not configured", progress: emptyProgress() },
       { status: 503 },
@@ -39,7 +46,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!isSupabaseConfigured()) {
+  if (!cloudReady()) {
     return NextResponse.json(
       { error: "Supabase is not configured" },
       { status: 503 },
@@ -87,7 +94,7 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE() {
-  if (!isSupabaseConfigured()) {
+  if (!cloudReady()) {
     return NextResponse.json(
       { error: "Supabase is not configured" },
       { status: 503 },

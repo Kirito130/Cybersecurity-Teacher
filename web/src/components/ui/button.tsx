@@ -8,13 +8,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "bg-phosphor text-crt border border-phosphor-dim shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_2px_0_#1f8a34] hover:bg-phosphor-bright active:translate-y-px active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.25)] px-5 py-2.5 text-sm",
+          "bg-phosphor text-ink border border-coral-dim shadow-[0_2px_0_#c44a2a] hover:bg-phosphor-bright active:translate-y-px active:shadow-none px-5 py-2.5 text-sm",
         secondary:
-          "bg-keycap text-text-on-crt border border-olive shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_2px_0_#2a2a26] hover:bg-olive active:translate-y-px px-5 py-2.5 text-sm",
+          "bg-wasabi text-ink border border-[#08c23c] shadow-[0_2px_0_#068a2c] hover:brightness-110 active:translate-y-px active:shadow-none px-5 py-2.5 text-sm",
         ghost:
-          "bg-transparent text-text-on-console hover:bg-bezel/40 px-3 py-2 text-sm",
+          "bg-transparent text-sand hover:bg-ink-muted hover:text-paper px-3 py-2 text-sm",
         outline:
-          "border-2 border-keycap bg-console text-text-on-console hover:border-phosphor hover:text-phosphor-dim px-5 py-2.5 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]",
+          "border border-paper bg-transparent text-paper hover:border-phosphor hover:text-phosphor px-5 py-2.5 text-sm",
         danger:
           "bg-danger/15 text-danger border border-danger/40 hover:bg-danger/25 px-4 py-2 text-sm",
       },

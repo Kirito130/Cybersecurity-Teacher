@@ -37,6 +37,8 @@ export type Checkpoint = {
   blockId: string;
   title: string;
   quizQuestions: QuizQuestion[];
+  /** Quiz question ids that must not score 0 (scope / isolation / safety). */
+  criticalQuestionIds: string[];
   practicalCriteria: PracticalCriterion[];
   practicalBrief: string;
   passRules: string;

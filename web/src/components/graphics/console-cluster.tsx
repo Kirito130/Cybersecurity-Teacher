@@ -19,7 +19,7 @@ export function ConsoleCluster({ className }: ConsoleClusterProps) {
   return (
     <div
       className={cn(
-        "grid gap-4 rounded-[var(--radius-lg)] border-2 border-keycap bg-console-deep p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] md:grid-cols-[1fr_1.1fr] md:p-4",
+        "grid gap-4 rounded-[var(--radius-lg)] border border-bezel bg-ink p-3 shadow-[0_18px_40px_rgba(0,0,0,0.35)] md:grid-cols-[1fr_1.1fr] md:p-4",
         className,
       )}
     >

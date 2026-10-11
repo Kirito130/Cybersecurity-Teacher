@@ -27,9 +27,11 @@ export function evaluateQuiz(
     perQuestion[question.id] = score;
     total += score;
   }
-  const scopeZero = (perQuestion.q1 ?? 0) === 0 || (perQuestion.q3 ?? 0) === 0;
-  const passed = total >= 10 && !scopeZero;
-  return { perQuestion, total, passed };
+  const criticalFailed = checkpoint.criticalQuestionIds.some(
+    (id) => (perQuestion[id] ?? 0) === 0,
+  );
+  const passed = total >= 10 && !criticalFailed;
+  return { perQuestion, total, passed, criticalFailed };
 }
 
 export function evaluatePractical(scores: Record<string, number>) {

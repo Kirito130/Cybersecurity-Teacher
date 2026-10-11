@@ -8,7 +8,6 @@ import { ClearanceMap } from "@/components/graphics/clearance-map";
 import { BadgeCrest } from "@/components/graphics/badge-crest";
 import { ScrollPath } from "@/components/graphics/scroll-path";
 import { ConsoleCluster } from "@/components/graphics/console-cluster";
-import { RadarScope } from "@/components/graphics/radar-scope";
 
 const stages = [
   {
@@ -40,67 +39,60 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="console-hero-frame">
-        <div className="console-hero">
-          <div className="console-hero__screen relative min-h-[calc(100vh-5.5rem)]">
-            <div aria-hidden className="crt-mesh pointer-events-none absolute inset-0" />
-            {!reduced ? (
-              <div
-                aria-hidden
-                className="crt-scan pointer-events-none absolute inset-0"
-              />
-            ) : null}
-            <ClearanceMap
-              className="pointer-events-none absolute inset-y-0 right-0 hidden max-w-full w-[min(52%,28rem)] overflow-hidden opacity-80 md:block"
-              parallax={false}
-            />
-            <RadarScope className="pointer-events-none absolute top-6 right-4 hidden w-36 max-w-[40%] opacity-70 lg:block xl:right-10 xl:w-44" />
+      <section className="relative min-h-[calc(100vh-4.5rem)] overflow-hidden">
+        <div aria-hidden className="crt-mesh pointer-events-none absolute inset-0" />
+        {!reduced ? (
+          <div
+            aria-hidden
+            className="crt-scan pointer-events-none absolute inset-0"
+          />
+        ) : null}
+        <ClearanceMap
+          className="pointer-events-none absolute inset-y-0 right-0 hidden max-w-full w-[min(48%,26rem)] overflow-hidden opacity-40 md:block"
+          parallax={false}
+        />
 
-            <div className="relative mx-auto flex min-h-[calc(100vh-5.5rem)] max-w-6xl flex-col justify-end px-5 pb-14 pt-20 md:justify-center md:px-10 md:pb-20 md:pt-12">
-              <motion.div
-                initial={reduced ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-                className="max-w-2xl"
-              >
-                <p className="font-display text-6xl font-semibold tracking-tight text-text-on-crt sm:text-7xl md:text-8xl">
-                  Cyber<span className="text-phosphor-bright">XP</span>
-                  {!reduced ? <span className="crt-cursor" aria-hidden /> : null}
-                </p>
-                <h1 className="mt-5 max-w-xl font-display text-2xl leading-snug text-text-on-crt sm:text-3xl md:text-4xl">
-                  Clearance path from zero to ethical hacking practice.
-                </h1>
-                <p className="mt-4 max-w-lg text-base leading-relaxed text-text-on-crt-muted md:text-lg">
-                  Nineteen blocks, checkpoints, and badges — learn with evidence,
-                  stay in scope, and open the next segment of the map.
-                </p>
-                <div className="mt-9 flex flex-wrap gap-3">
-                  <Link href="/roadmap">
-                    <Button size="lg">Open the roadmap</Button>
-                  </Link>
-                  <Link href="/blocks/00">
-                    <Button size="lg" variant="secondary">
-                      Start Block 00
-                    </Button>
-                  </Link>
-                </div>
-              </motion.div>
-
-              <div className="mt-10 max-w-[200px] md:hidden">
-                <RadarScope />
-              </div>
+        <div className="relative mx-auto flex min-h-[calc(100vh-4.5rem)] max-w-5xl flex-col items-center justify-center px-5 pb-16 pt-10 text-center md:px-10">
+          <motion.div
+            initial={reduced ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, ease: "easeOut" }}
+            className="w-full"
+          >
+            <p className="font-display text-[clamp(3.5rem,12vw,8rem)] font-extrabold leading-none tracking-[-0.05em] text-paper">
+              Cyber<span className="text-coral">XP</span>
+            </p>
+            <h1 className="mt-5 font-display text-[clamp(1.75rem,4.5vw,2.75rem)] font-bold leading-tight tracking-[-0.03em] text-sand">
+              Leave zero behind.
+            </h1>
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-sand-muted md:text-lg">
+              A clearance path that unites{" "}
+              <strong className="font-semibold text-paper">
+                study, proof, and checkpoints
+              </strong>{" "}
+              — from no tech background to ethical hacking practice.
+            </p>
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+              <Link href="/roadmap">
+                <Button size="lg">Open the roadmap</Button>
+              </Link>
+              <Link href="/blocks/00">
+                <Button size="lg" variant="outline">
+                  Start Block 00
+                </Button>
+              </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      <section className="section-fade-top">
+      <section className="paper-band">
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
-          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-phosphor-dim">
+          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-coral-dim">
             Clearance loop
           </p>
-          <h2 className="mt-3 max-w-2xl font-display text-3xl text-text-on-console md:text-4xl">
-            How you advance on the console.
+          <h2 className="mt-3 max-w-2xl font-display text-3xl font-bold tracking-tight text-ink md:text-5xl">
+            How you advance on the path.
           </h2>
 
           <ScrollPath className="relative mt-12">
@@ -111,15 +103,15 @@ export default function HomePage() {
                   className="relative pb-10 pl-12 last:pb-0 md:pl-14"
                 >
                   <span
-                    className="absolute left-0 top-1 flex h-7 w-7 items-center justify-center rounded-[var(--radius-sm)] border border-keycap bg-crt font-mono text-[11px] font-semibold text-phosphor"
+                    className="absolute left-0 top-1 flex h-7 w-7 items-center justify-center rounded-[var(--radius-sm)] border border-ink/20 bg-ink font-mono text-[11px] font-semibold text-coral"
                     aria-hidden
                   >
                     {stage.code}
                   </span>
-                  <h3 className="font-display text-xl text-text-on-console md:text-2xl">
+                  <h3 className="font-display text-xl font-bold text-ink md:text-2xl">
                     {stage.title}
                   </h3>
-                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-text-on-console-muted md:text-base">
+                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted md:text-base">
                     {stage.body}
                   </p>
                 </li>
@@ -129,16 +121,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="border-y border-bezel bg-console-deep/50">
+      <section className="border-y border-bezel bg-ink-soft">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 md:grid-cols-[0.95fr_1.05fr] md:px-6 md:py-20">
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-phosphor-dim">
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-coral">
               Mission board
             </p>
-            <h2 className="mt-3 font-display text-3xl text-text-on-console md:text-4xl">
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-paper md:text-4xl">
               See your clearance status live.
             </h2>
-            <p className="mt-3 max-w-md text-text-on-console-muted">
+            <p className="mt-3 max-w-md text-sand-muted">
               Radar, gauges, and telemetry mirror the same loop you play on the
               roadmap — visible progress, the next gate, and medals still
               locked.
@@ -153,13 +145,13 @@ export default function HomePage() {
 
       <section>
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
-          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-phosphor-dim">
+          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-coral">
             Open modules
           </p>
-          <h2 className="mt-3 max-w-2xl font-display text-3xl text-text-on-console md:text-4xl">
+          <h2 className="mt-3 max-w-2xl font-display text-3xl font-bold tracking-tight text-paper md:text-4xl">
             First clearances on the board.
           </h2>
-          <p className="mt-3 max-w-xl text-text-on-console-muted">
+          <p className="mt-3 max-w-xl text-sand-muted">
             Progress is tracked in this browser. Block 00 is open — later
             modules stay offline until you clear each checkpoint.
           </p>
@@ -174,23 +166,23 @@ export default function HomePage() {
                   <span
                     className={
                       block.state === "open"
-                        ? "mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-phosphor shadow-[0_0_8px_var(--phosphor)]"
+                        ? "mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-wasabi shadow-[0_0_8px_var(--wasabi)]"
                         : block.state === "next"
-                          ? "mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-phosphor-bright"
+                          ? "mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-phosphor"
                           : "mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-locked"
                     }
                     aria-hidden
                   />
                   <div>
-                    <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-phosphor-dim">
+                    <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-coral">
                       Block {block.id}
                     </p>
-                    <p className="mt-1 font-display text-xl text-text-on-console">
+                    <p className="mt-1 font-display text-xl font-bold text-paper">
                       {block.title}
                     </p>
                   </div>
                 </div>
-                <p className="pl-6 font-mono text-[11px] uppercase tracking-[0.1em] text-text-on-console-muted sm:pl-0">
+                <p className="pl-6 font-mono text-[11px] uppercase tracking-[0.1em] text-sand-muted sm:pl-0">
                   {block.state === "open"
                     ? "Standby · open"
                     : block.state === "next"
@@ -209,45 +201,44 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="console-hero-frame console-hero-frame--flush-bottom">
-        <div className="console-hero">
-          <div className="console-hero__screen relative overflow-hidden">
-            <div className="relative mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.2fr_0.8fr] md:items-center md:px-10 md:py-16">
-              <Reveal>
-                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-phosphor">
-                  Medal gallery
-                </p>
-                <h2 className="mt-3 font-display text-3xl text-text-on-crt md:text-4xl">
-                  Checkpoints clear. Badges stick.
-                </h2>
-                <p className="mt-4 max-w-xl text-base leading-relaxed text-text-on-crt-muted">
-                  Every block ends with a quiz and practical checkpoint. Pass both
-                  to unlock the next segment and bank a block badge in your
-                  gallery.
-                </p>
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <Link href="/badges">
-                    <Button size="lg">View badges</Button>
-                  </Link>
-                  <Link href="/how-it-works">
-                    <Button size="lg" variant="secondary">
-                      See the rules
-                    </Button>
-                  </Link>
-                </div>
-              </Reveal>
-
-              <div className="flex items-end justify-center gap-3 md:justify-end">
-                <BadgeCrest label="BLOCK 00" tone="cleared" />
-                <BadgeCrest label="BLOCK 01" tone="signal" locked />
-                <BadgeCrest
-                  label="MILE"
-                  tone="xp"
-                  locked
-                  className="hidden sm:block"
-                />
-              </div>
+      <section className="paper-band">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-[1.2fr_0.8fr] md:items-center md:px-6 md:py-20">
+          <Reveal>
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-coral-dim">
+              Medal gallery
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">
+              Checkpoints clear. Badges stick.
+            </h2>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
+              Every block ends with a quiz and practical checkpoint. Pass both
+              to unlock the next segment and bank a block badge in your gallery.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/badges">
+                <Button size="lg">View badges</Button>
+              </Link>
+              <Link href="/how-it-works">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-ink text-ink hover:border-coral hover:text-coral"
+                >
+                  See the rules
+                </Button>
+              </Link>
             </div>
+          </Reveal>
+
+          <div className="flex items-end justify-center gap-3 md:justify-end">
+            <BadgeCrest label="BLOCK 00" tone="cleared" />
+            <BadgeCrest label="BLOCK 01" tone="signal" locked />
+            <BadgeCrest
+              label="MILE"
+              tone="xp"
+              locked
+              className="hidden sm:block"
+            />
           </div>
         </div>
       </section>

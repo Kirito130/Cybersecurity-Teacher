@@ -4,3 +4,10 @@ export function isSupabaseConfigured() {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   );
 }
+
+/** Auth + service-role writes required for cloud progress APIs. */
+export function isServiceRoleConfigured() {
+  return (
+    isSupabaseConfigured() && Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY)
+  );
+}

@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import { Chakra_Petch, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { Figtree, IBM_Plex_Mono, Syne } from "next/font/google";
 import { AuthProvider } from "@/components/auth-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ProgressProvider } from "@/components/progress-provider";
 import "./globals.css";
 
-const display = Chakra_Petch({
+const display = Syne({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["600", "700", "800"],
   variable: "--font-display",
   display: "swap",
 });
 
-const body = IBM_Plex_Sans({
+const body = Figtree({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-body",
@@ -55,7 +55,7 @@ export default function RootLayout({
             <div className="flex min-h-screen min-w-0 flex-col overflow-x-clip">
               <a
                 href="#main"
-                className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-phosphor focus:px-3 focus:py-2 focus:font-medium focus:text-crt focus:outline-none"
+                className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-phosphor focus:px-3 focus:py-2 focus:font-medium focus:text-ink focus:outline-none"
               >
                 Skip to content
               </a>

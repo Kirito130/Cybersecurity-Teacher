@@ -25,10 +25,10 @@ export const blocks: Block[] = [
       "Use a computer confidently and explain what is happening when software runs. Do not begin with attack tools.",
     estimatedHours: "35–55",
     prerequisites: ["00"],
-    topicIds: [],
-    checkpointId: null,
+    topicIds: ["01.1", "01.2", "01.3"],
+    checkpointId: "checkpoint-01",
     badgeId: "badge-01",
-    detailLevel: "stub",
+    detailLevel: "full",
     topicCount: 3,
   },
   {

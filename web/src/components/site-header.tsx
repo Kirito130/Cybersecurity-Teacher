@@ -2,17 +2,26 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { useEffect, useId, useRef, useState } from "react";
+import { ChevronDown, X } from "lucide-react";
+import { BrandStamp } from "@/components/brand-stamp";
 import { useAuth } from "@/components/auth-provider";
 import { useProgress } from "@/components/progress-provider";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 
 const links = [
   { href: "/roadmap", label: "Roadmap" },
   { href: "/badges", label: "Badges" },
   { href: "/how-it-works", label: "How it works" },
+];
+
+const helpLinks = [
+  { href: "/roadmap", label: "Roadmap" },
+  { href: "/blocks/00", label: "Block 00" },
+  { href: "/badges", label: "Badges" },
+  { href: "/how-it-works", label: "Process" },
+  { href: "/how-it-works#accounts", label: "Accounts" },
+  { href: "/auth/sign-in", label: "Sign in" },
 ];
 
 function hudLabel(pathname: string): string {
@@ -30,8 +39,12 @@ export function SiteHeader() {
   const router = useRouter();
   const { user, loading, configured, signOut } = useAuth();
   const { mode, syncing } = useProgress();
-  const [open, setOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const helpRef = useRef<HTMLDivElement>(null);
+  const helpMenuId = useId();
   const hud = hudLabel(pathname);
+  const accountHref = configured ? "/auth/sign-in" : "/how-it-works#accounts";
 
   async function handleSignOut() {
     await signOut();
@@ -39,40 +52,64 @@ export function SiteHeader() {
     router.refresh();
   }
 
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      setHelpOpen(false);
+      setMobileOpen(false);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!helpOpen) return;
+
+    function onPointerDown(event: MouseEvent) {
+      if (!helpRef.current?.contains(event.target as Node)) {
+        setHelpOpen(false);
+      }
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setHelpOpen(false);
+    }
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [helpOpen]);
+
   return (
-    <header className="sticky top-0 z-40 border-b-2 border-keycap bg-console text-text-on-console shadow-[0_2px_0_color-mix(in_oklab,var(--keycap)_25%,transparent)]">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5 md:px-6">
-        <div className="flex items-center gap-4">
-          <Link
-            href="/"
-            className="font-display text-xl font-semibold tracking-tight text-text-on-console md:text-2xl"
-          >
-            Cyber<span className="text-phosphor">XP</span>
-          </Link>
-          <div
-            className="hidden items-center gap-2 rounded-[var(--radius-sm)] border border-keycap bg-crt px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-phosphor sm:flex"
-            aria-live="polite"
-          >
-            <span
-              aria-hidden
-              className="h-1.5 w-1.5 rounded-full bg-phosphor shadow-[0_0_6px_var(--phosphor)]"
-            />
+    <header className="sticky top-0 z-40 bg-[#141414] text-[#fffbea]">
+      <div className="mx-auto grid h-[63px] max-w-[90rem] grid-cols-[auto_1fr_auto] items-center gap-6 px-[5%] md:px-[71px]">
+        <div className="relative justify-self-start">
+          <BrandStamp />
+          <span className="sr-only" aria-live="polite">
             {hud}
-          </div>
+            {user
+              ? ` · ${syncing ? "Syncing" : mode === "cloud" ? "Cloud" : "Local"}`
+              : ""}
+          </span>
         </div>
 
-        <nav className="hidden items-center gap-0.5 md:flex" aria-label="Primary">
+        <nav
+          className="hidden items-center justify-center gap-1 md:flex"
+          aria-label="Primary"
+        >
           {links.map((link) => {
             const active = pathname.startsWith(link.href);
             return (
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={active ? "page" : undefined}
                 className={cn(
-                  "rounded-[var(--radius-md)] px-3 py-2 font-mono text-xs uppercase tracking-[0.1em] transition-colors",
+                  "px-3.5 py-[7px] text-sm font-medium transition-colors",
                   active
-                    ? "bg-crt text-phosphor-bright"
-                    : "text-text-on-console-muted hover:bg-bezel/50 hover:text-text-on-console",
+                    ? "text-[#fffbea]"
+                    : "text-[#bbbaad] hover:text-[#fffbea]",
                 )}
               >
                 {link.label}
@@ -81,61 +118,139 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
-          {!loading && user ? (
-            <>
-              <span className="max-w-[10rem] truncate font-mono text-[11px] uppercase tracking-[0.1em] text-text-on-console-muted">
-                {syncing ? "Sync…" : mode === "cloud" ? "Cloud" : "Local"} ·{" "}
-                {user.email}
-              </span>
+        <div className="justify-self-end">
+          <div className="hidden items-center gap-1 md:flex">
+            <div className="relative" ref={helpRef}>
+              <button
+                type="button"
+                className="inline-flex items-center gap-1 px-3.5 py-[7px] text-sm font-medium text-[#bbbaad] transition-colors hover:text-[#fffbea]"
+                aria-expanded={helpOpen}
+                aria-controls={helpMenuId}
+                aria-haspopup="menu"
+                onClick={() => setHelpOpen((value) => !value)}
+              >
+                Help
+                <ChevronDown
+                  size={14}
+                  strokeWidth={2}
+                  className={cn(
+                    "transition-transform duration-150",
+                    helpOpen && "rotate-180",
+                  )}
+                  aria-hidden
+                />
+              </button>
+              {helpOpen ? (
+                <div
+                  id={helpMenuId}
+                  role="menu"
+                  className="absolute right-0 top-[calc(100%+0.5rem)] z-50 min-w-[11rem] border border-[#333] bg-[#fffbea] py-2 text-[#141414] shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+                >
+                  {helpLinks.map((link) => (
+                    <Link
+                      key={link.href + link.label}
+                      href={
+                        link.href === "/auth/sign-in" && !configured
+                          ? "/how-it-works#accounts"
+                          : link.href
+                      }
+                      role="menuitem"
+                      className="block px-4 py-2 text-sm transition-colors hover:bg-[#141414] hover:text-[#fffbea]"
+                      onClick={() => setHelpOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                  {!loading && user ? (
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className="block w-full px-4 py-2 text-left text-sm transition-colors hover:bg-[#141414] hover:text-[#fffbea]"
+                      onClick={() => {
+                        setHelpOpen(false);
+                        void handleSignOut();
+                      }}
+                    >
+                      Sign out
+                    </button>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
+
+            {!loading && user ? (
               <button
                 type="button"
                 onClick={() => void handleSignOut()}
-                className="font-mono text-[11px] uppercase tracking-[0.12em] text-text-on-console-muted hover:text-text-on-console"
+                aria-label={`Sign out (${user.email})`}
+                title={user.email ?? "Sign out"}
+                className="ml-2 inline-flex h-[37px] items-center rounded-[42px] border border-solid border-[#fffbea] px-[17.5px] text-sm font-medium text-[#fffbea] transition-colors hover:border-[#ff7145] hover:text-[#ff7145]"
               >
-                Sign out
+                Logout
               </button>
-            </>
-          ) : (
-            <Link
-              href={configured ? "/auth/sign-in" : "/how-it-works#accounts"}
-              className="font-mono text-[11px] uppercase tracking-[0.12em] text-text-on-console-muted hover:text-text-on-console"
-            >
-              Sign in
-            </Link>
-          )}
-          <Link href="/roadmap">
-            <Button size="sm">Enter path</Button>
-          </Link>
-        </div>
+            ) : (
+              <Link
+                href={accountHref}
+                className="ml-2 inline-flex h-[37px] items-center rounded-[42px] border border-solid border-[#fffbea] px-[17.5px] text-sm font-medium text-[#fffbea] transition-colors hover:border-[#ff7145] hover:text-[#ff7145]"
+              >
+                Login
+              </Link>
+            )}
+          </div>
 
-        <button
-          type="button"
-          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-md)] border border-bezel bg-console-deep text-text-on-console md:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((value) => !value)}
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
+          <button
+            type="button"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center text-[#fffbea] md:hidden"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMobileOpen((value) => !value)}
+          >
+            {mobileOpen ? (
+              <X size={22} strokeWidth={1.75} />
+            ) : (
+              <span className="flex w-6 flex-col gap-[5px]" aria-hidden>
+                <span className="h-[2px] w-full bg-[#ff7145]" />
+                <span className="h-[2px] w-full bg-[#fffbea]" />
+                <span className="h-[2px] w-full bg-[#fffbea]" />
+              </span>
+            )}
+          </button>
+        </div>
       </div>
 
-      {open ? (
+      {mobileOpen ? (
         <div
           id="mobile-nav"
-          className="border-t border-bezel bg-console-deep px-4 py-4 md:hidden"
+          className="border-t border-[#333] bg-[#141414] px-[5%] py-4 md:hidden"
         >
-          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.14em] text-phosphor-dim">
-            {hud}
-          </p>
-          <nav className="flex flex-col gap-1" aria-label="Mobile">
-            {links.map((link) => (
+          <nav className="flex flex-col" aria-label="Mobile">
+            {links.map((link) => {
+              const active = pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "py-3 text-base",
+                    active ? "text-[#fffbea]" : "text-[#bbbaad]",
+                  )}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            {helpLinks.map((link) => (
               <Link
-                key={link.href}
-                href={link.href}
-                className="rounded-[var(--radius-md)] px-3 py-3 text-base font-medium text-text-on-console hover:bg-bezel/40"
-                onClick={() => setOpen(false)}
+                key={`m-${link.href}-${link.label}`}
+                href={
+                  link.href === "/auth/sign-in" && !configured
+                    ? "/how-it-works#accounts"
+                    : link.href
+                }
+                className="py-3 text-sm text-[#bbbaad]"
+                onClick={() => setMobileOpen(false)}
               >
                 {link.label}
               </Link>
@@ -143,26 +258,23 @@ export function SiteHeader() {
             {!loading && user ? (
               <button
                 type="button"
-                className="rounded-[var(--radius-md)] px-3 py-3 text-left font-mono text-sm uppercase tracking-[0.12em] text-text-on-console-muted"
+                className="mt-3 inline-flex h-[37px] w-full items-center justify-center rounded-[42px] border border-solid border-[#fffbea] text-sm font-medium text-[#fffbea]"
                 onClick={() => {
-                  setOpen(false);
+                  setMobileOpen(false);
                   void handleSignOut();
                 }}
               >
-                Sign out ({user.email})
+                Logout
               </button>
             ) : (
               <Link
-                href={configured ? "/auth/sign-in" : "/how-it-works#accounts"}
-                className="rounded-[var(--radius-md)] px-3 py-3 font-mono text-sm uppercase tracking-[0.12em] text-text-on-console-muted"
-                onClick={() => setOpen(false)}
+                href={accountHref}
+                className="mt-3 inline-flex h-[37px] w-full items-center justify-center rounded-[42px] border border-solid border-[#fffbea] text-sm font-medium text-[#fffbea]"
+                onClick={() => setMobileOpen(false)}
               >
-                Sign in
+                Login
               </Link>
             )}
-            <Link href="/roadmap" onClick={() => setOpen(false)}>
-              <Button className="mt-2 w-full">Enter path</Button>
-            </Link>
           </nav>
         </div>
       ) : null}

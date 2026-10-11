@@ -4,7 +4,10 @@ import { getCheckpoint } from "@/content";
 import { recordCheckpointAttempt } from "@/lib/progress-db";
 import { evaluatePractical } from "@/lib/quiz-scoring";
 import { rateLimit } from "@/lib/rate-limit";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import {
+  isServiceRoleConfigured,
+  isSupabaseConfigured,
+} from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 
 const bodySchema = z.object({
@@ -13,7 +16,7 @@ const bodySchema = z.object({
 });
 
 export async function POST(request: Request) {
-  if (!isSupabaseConfigured()) {
+  if (!isSupabaseConfigured() || !isServiceRoleConfigured()) {
     return NextResponse.json(
       { error: "Supabase is not configured" },
       { status: 503 },
@@ -78,6 +81,8 @@ export async function POST(request: Request) {
       checkpointId: checkpoint.id,
       kind: "practical",
       score: result.total,
+      maxScore: checkpoint.practicalCriteria.length * 5,
+      passThreshold: 16,
       passed: result.passed,
       payload: { criteriaScores: scores },
     });

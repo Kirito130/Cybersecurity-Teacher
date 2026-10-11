@@ -5,6 +5,7 @@ export const checkpoints: Checkpoint[] = [
     id: "checkpoint-00",
     blockId: "00",
     title: "Checkpoint 00 — Permission and practice plan",
+    criticalQuestionIds: ["q1", "q3"],
     quizQuestions: [
       {
         id: "q1",
@@ -77,6 +78,83 @@ export const checkpoints: Checkpoint[] = [
       "Submit the Cedar Lab authorization sheet, diagram, notebook sample, and ten scope decisions. Score each criterion 0–5 using the universal practical checkpoint rules.",
     passRules:
       "Quiz: score each answer 0–2; pass at 10/12 with no zero on a scope/isolation question. Practical: four criteria at 0–5; pass at 16/20 with no criterion below 3.",
+  },
+  {
+    id: "checkpoint-01",
+    blockId: "01",
+    title: "Checkpoint 01 — Rebuildable workstation",
+    criticalQuestionIds: ["q5"],
+    quizQuestions: [
+      {
+        id: "q1",
+        prompt:
+          "Why does adding disk space not necessarily fix a machine running out of RAM?",
+        modelAnswer:
+          "RAM holds active working data; disk capacity is a different resource. Paging may help capacity but can be much slower.",
+      },
+      {
+        id: "q2",
+        prompt:
+          "What does an operating system provide that an ordinary application does not?",
+        modelAnswer:
+          "It manages hardware, processes, memory, files, and access between programs and devices.",
+      },
+      {
+        id: "q3",
+        prompt: "Is renaming picture.jpg to picture.txt a conversion? Explain.",
+        modelAnswer:
+          "No. The bytes and format stay the same; only the name changes.",
+      },
+      {
+        id: "q4",
+        prompt: "Which two machines are meant by “host” and “guest”?",
+        modelAnswer:
+          "The host runs the hypervisor; the guest is the OS inside a virtual machine.",
+      },
+      {
+        id: "q5",
+        prompt:
+          "Why is NAT alone insufficient to guarantee a vulnerable guest cannot reach other systems?",
+        modelAnswer:
+          "NAT commonly permits outbound traffic and may have port forwards; verify routes and interfaces and use stronger lab separation.",
+      },
+      {
+        id: "q6",
+        prompt: "What must you record so another learner can recreate your VM?",
+        modelAnswer:
+          "Image/source and version, architecture, virtual resources, network mode, setup steps, and recovery/verification procedure.",
+      },
+    ],
+    practicalCriteria: [
+      {
+        id: "c1",
+        label: "Working rebuild",
+        description:
+          "Another learner (or you later) can rebuild the guest from your written instructions alone.",
+      },
+      {
+        id: "c2",
+        label: "Data recovery",
+        description:
+          "You recover a file from your own backup or restore process and show evidence it matches.",
+      },
+      {
+        id: "c3",
+        label: "Isolation verification",
+        description:
+          "You demonstrate snapshot rollback and explain guest connectivity (internal vs NAT vs unintended paths).",
+      },
+      {
+        id: "c4",
+        label: "Hardware-and-OS explanation",
+        description:
+          "You correctly relate host resources, guest settings, and OS/process behavior from your inventory notes.",
+      },
+    ],
+    practicalBrief:
+      "Rebuild a guest from your instructions, recover a file, demonstrate snapshot rollback, and explain its connectivity. Score: working rebuild / data recovery / isolation verification / hardware-and-OS explanation.",
+    passRules:
+      "Quiz: score each answer 0–2; pass at 10/12 with no zero on the isolation question (q5). Practical: four criteria at 0–5; pass at 16/20 with no criterion below 3.",
   },
 ];
 

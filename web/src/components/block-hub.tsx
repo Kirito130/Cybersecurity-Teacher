@@ -88,7 +88,7 @@ export function BlockHub({ block, topics }: BlockHubProps) {
             </div>
             <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.1em] text-text-on-crt-muted">
               {block.estimatedHours} focused hours · {block.topicCount} topics
-              {block.detailLevel === "stub" ? " · outline only in Phase 1" : ""}
+              {block.detailLevel === "stub" ? " · outline — topics coming soon" : ""}
             </p>
           </div>
         </div>

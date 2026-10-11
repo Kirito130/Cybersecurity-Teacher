@@ -1,40 +1,57 @@
 @import "tailwindcss";
 
 :root {
-  /* Cassette console shell */
-  --console: #e4dccb;
-  --console-deep: #c9bda8;
-  --bezel: #b8ad98;
-  --keycap: #4a4a44;
-  --olive: #6b6558;
+  /* Tonemaki-inspired kinetic palette — CyberXP mapping
+     Source hues sampled from tonemaki.com (2026-10-11):
+     ink #141414 · coral #FF7145 · paper #FFFBEA · sand #DAD6C8 · wasabi #0AE448 */
+  --ink: #141414;
+  --ink-soft: #1c1c1c;
+  --ink-muted: #2a2a2a;
+  --paper: #fffbea;
+  --paper-dim: #fefce1;
+  --sand: #dad6c8;
+  --sand-muted: #bbbaad;
+  --coral: #ff7145;
+  --coral-bright: #ff8f6a;
+  --coral-dim: #e85a32;
+  --coral-soft: #3a1f18;
+  --wasabi: #0ae448;
+  --wasabi-soft: #0a3d1c;
+  --amber: #fdaa48;
+  --danger: #fa3c23;
+  --muted: #575757;
 
-  /* Recessed CRT screens — green-tube black */
-  --crt: #0f1410;
-  --crt-elevated: #161c18;
-  --crt-line: #2a3a2e;
-  --crt-line-strong: #4a6550;
+  /* Semantic aliases used across the app */
+  --cream: var(--paper);
+  --charcoal: var(--ink);
+  --slate: var(--sand);
+  --console: var(--ink);
+  --console-deep: var(--ink-soft);
+  --bezel: #333333;
+  --keycap: var(--sand);
+  --olive: var(--muted);
 
-  /* P1 phosphor green (primary) — amber kept for warnings only */
-  --phosphor: #3dcc55;
-  --phosphor-bright: #6ef07a;
-  --phosphor-dim: #1f8a34;
-  --phosphor-soft: #14351c;
-  --cleared: #7dff9a;
-  --cleared-soft: #1a3d24;
-  --locked: #6b6558;
-  --warning: #e09a1b;
-  --danger: #c45c3e;
+  --crt: var(--ink);
+  --crt-elevated: var(--ink-muted);
+  --crt-line: #3f3f3a;
+  --crt-line-strong: var(--sand-muted);
 
-  /* Text roles */
-  --text-on-console: #1c1d1a;
-  --text-on-console-muted: #4a4a44;
-  --text-on-crt: #d8f0dc;
-  --text-on-crt-muted: #8ab894;
+  --phosphor: var(--coral);
+  --phosphor-bright: var(--coral-bright);
+  --phosphor-dim: var(--coral-dim);
+  --phosphor-soft: var(--coral-soft);
+  --cleared: var(--wasabi);
+  --cleared-soft: var(--wasabi-soft);
+  --locked: var(--muted);
+  --warning: var(--amber);
 
-  /* Aliases — keep existing class names working during restyle */
-  --ink: var(--crt);
-  --ink-soft: #121914;
-  --ink-muted: var(--crt-elevated);
+  --text-on-console: var(--paper);
+  --text-on-console-muted: var(--sand-muted);
+  --text-on-crt: var(--paper);
+  --text-on-crt-muted: var(--sand);
+  --text-on-paper: var(--ink);
+  --text-on-paper-muted: var(--muted);
+
   --panel: var(--console);
   --panel-elevated: var(--console-deep);
   --line: var(--bezel);
@@ -44,24 +61,37 @@
   --text-on-ink: var(--text-on-crt);
   --text-on-ink-muted: var(--text-on-crt-muted);
   --signal: var(--phosphor);
-  --signal-hover: #52d868;
+  --signal-hover: var(--coral-bright);
   --signal-bright: var(--phosphor-bright);
   --signal-soft: var(--phosphor-soft);
   --xp: var(--phosphor);
   --xp-soft: var(--phosphor-soft);
 
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
   --font-display: var(--font-display);
   --font-body: var(--font-body);
   --font-mono: var(--font-mono);
-  --shadow-soft: 0 12px 28px rgba(28, 29, 26, 0.22);
-  --bloom-phosphor: 0 0 0 1px color-mix(in oklab, var(--phosphor) 40%, transparent),
-    0 0 14px color-mix(in oklab, var(--phosphor) 22%, transparent);
+  --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.45);
+  --bloom-phosphor: 0 0 0 1px color-mix(in oklab, var(--phosphor) 45%, transparent),
+    0 0 18px color-mix(in oklab, var(--phosphor) 28%, transparent);
 }
 
 @theme inline {
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-muted: var(--ink-muted);
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-sand: var(--sand);
+  --color-sand-muted: var(--sand-muted);
+  --color-cream: var(--cream);
+  --color-coral: var(--coral);
+  --color-coral-bright: var(--coral-bright);
+  --color-coral-dim: var(--coral-dim);
+  --color-slate: var(--slate);
+  --color-charcoal: var(--charcoal);
   --color-console: var(--console);
   --color-console-deep: var(--console-deep);
   --color-bezel: var(--bezel);
@@ -75,13 +105,13 @@
   --color-phosphor-bright: var(--phosphor-bright);
   --color-phosphor-dim: var(--phosphor-dim);
   --color-phosphor-soft: var(--phosphor-soft);
+  --color-wasabi: var(--wasabi);
   --color-text-on-console: var(--text-on-console);
   --color-text-on-console-muted: var(--text-on-console-muted);
   --color-text-on-crt: var(--text-on-crt);
   --color-text-on-crt-muted: var(--text-on-crt-muted);
-  --color-ink: var(--ink);
-  --color-ink-soft: var(--ink-soft);
-  --color-ink-muted: var(--ink-muted);
+  --color-text-on-paper: var(--text-on-paper);
+  --color-text-on-paper-muted: var(--text-on-paper-muted);
   --color-panel: var(--panel);
   --color-panel-elevated: var(--panel-elevated);
   --color-line: var(--line);
@@ -101,6 +131,8 @@
   --color-locked: var(--locked);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
+  --color-muted: var(--muted);
+  --color-amber: var(--amber);
   --font-family-display: var(--font-display);
   --font-family-body: var(--font-body);
   --font-family-mono: var(--font-mono);
@@ -119,17 +151,17 @@ body {
   margin: 0;
   min-height: 100vh;
   overflow-x: clip;
-  background: var(--console);
+  background: var(--ink);
   color: var(--text-on-console);
   font-family: var(--font-body), system-ui, sans-serif;
   text-rendering: optimizeLegibility;
   background-image:
-    linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--console) 92%, #fff) 0%,
-      var(--console) 40%,
-      var(--console-deep) 100%
-    );
+    radial-gradient(
+      120% 80% at 50% -10%,
+      color-mix(in oklab, var(--coral) 14%, transparent),
+      transparent 55%
+    ),
+    linear-gradient(180deg, #181818 0%, var(--ink) 45%, #101010 100%);
 }
 
 @layer base {
@@ -142,14 +174,14 @@ body {
   textarea,
   select {
     color: var(--text-on-crt);
-    background: var(--crt);
+    background: var(--ink-soft);
     border: 1px solid var(--crt-line);
   }
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--phosphor) 45%, transparent);
-  color: var(--crt);
+  background: color-mix(in oklab, var(--phosphor) 50%, transparent);
+  color: var(--ink);
 }
 
 :focus-visible {
@@ -192,29 +224,141 @@ body {
   font-family: var(--font-mono), ui-monospace, monospace;
 }
 
-/* —— Shell (putty hardware) —— */
+/* Stamp mark — Tonemaki-style serrated logo chip */
+.brand-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.55rem 1rem;
+  background: var(--sand);
+  color: var(--ink);
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+  transform: rotate(-3deg);
+  clip-path: polygon(
+    0 10%,
+    3% 0,
+    8% 8%,
+    14% 0,
+    20% 9%,
+    26% 0,
+    32% 8%,
+    38% 0,
+    44% 9%,
+    50% 0,
+    56% 8%,
+    62% 0,
+    68% 9%,
+    74% 0,
+    80% 8%,
+    86% 0,
+    92% 9%,
+    97% 0,
+    100% 10%,
+    100% 90%,
+    97% 100%,
+    92% 91%,
+    86% 100%,
+    80% 92%,
+    74% 100%,
+    68% 91%,
+    62% 100%,
+    56% 92%,
+    50% 100%,
+    44% 91%,
+    38% 100%,
+    32% 92%,
+    26% 100%,
+    20% 91%,
+    14% 100%,
+    8% 92%,
+    3% 100%,
+    0 90%
+  );
+}
+
+.brand-stamp:hover {
+  transform: rotate(-3deg) scale(1.02);
+}
+
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.3rem;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid var(--paper);
+  border-radius: 42px;
+  color: var(--paper);
+  background: transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.nav-pill:hover {
+  border-color: var(--coral);
+  color: var(--coral);
+}
+
+.nav-text-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.875rem;
+  color: var(--sand-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 160ms ease;
+}
+
+.nav-text-link::after {
+  content: "";
+  position: absolute;
+  left: 0.875rem;
+  right: 0.875rem;
+  bottom: 0.2rem;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 180ms ease;
+}
+
+.nav-text-link:hover,
+.nav-text-link[aria-current="page"] {
+  color: var(--paper);
+}
+
+.nav-text-link:hover::after,
+.nav-text-link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+/* —— Shell / surface —— */
 .shell-plate {
-  background: color-mix(in oklab, var(--console) 70%, var(--console-deep));
+  background: var(--ink-soft);
   border: 1px solid var(--bezel);
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklab, #fff 35%, transparent),
-    0 2px 0 color-mix(in oklab, var(--keycap) 18%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--paper) 6%, transparent);
 }
 
 .shell-recess {
-  background: var(--console-deep);
-  border: 1px solid color-mix(in oklab, var(--keycap) 35%, var(--bezel));
-  box-shadow: inset 0 2px 6px rgba(28, 29, 26, 0.18);
+  background: var(--ink-muted);
+  border: 1px solid var(--crt-line);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
-/* —— CRT screens —— */
 .crt-panel {
   background: var(--crt-elevated);
   border: 1px solid var(--crt-line);
   color: var(--text-on-crt);
-  box-shadow:
-    inset 0 0 0 1px color-mix(in oklab, var(--phosphor) 8%, transparent),
-    inset 0 12px 28px rgba(0, 0, 0, 0.28);
+  box-shadow: inset 0 12px 28px rgba(0, 0, 0, 0.28);
 }
 
 .crt-interactive {
@@ -235,25 +379,17 @@ body {
   transform: translateY(-1px);
 }
 
-/* Outer inset via padding so the bezel never exceeds the viewport (mx + width:100% overflows). */
 .console-hero-frame {
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  padding-inline: 0.75rem;
-  padding-block-start: 0.75rem;
-}
-
-@media (min-width: 768px) {
-  .console-hero-frame {
-    padding-inline: 1.5rem;
-    padding-block-start: 1rem;
-  }
+  padding-inline: 0;
+  padding-block-start: 0;
 }
 
 .console-hero-frame--flush-bottom {
-  padding-block-end: 1.5rem;
+  padding-block-end: 0;
 }
 
 .console-hero {
@@ -261,11 +397,9 @@ body {
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  background: var(--console-deep);
-  padding: 0.65rem;
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklab, #fff 28%, transparent),
-    0 8px 24px rgba(28, 29, 26, 0.2);
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
 }
 
 .console-hero__screen {
@@ -273,30 +407,23 @@ body {
   width: 100%;
   max-width: 100%;
   overflow: hidden;
-  background-color: var(--crt);
-  background-image: linear-gradient(
-    165deg,
-    #0f1410 0%,
-    #152018 55%,
-    #0c1610 100%
-  );
-  border: 3px solid var(--keycap);
-  border-radius: 6px / 10px;
+  background-color: transparent;
+  background-image: none;
+  border: 0;
+  border-radius: 0;
   color: var(--text-on-crt);
-  box-shadow:
-    inset 0 0 60px rgba(0, 0, 0, 0.55),
-    inset 0 0 0 1px color-mix(in oklab, var(--phosphor) 14%, transparent);
+  box-shadow: none;
 }
 
 .crt-mesh {
   background-image:
-    linear-gradient(rgba(216, 240, 220, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(216, 240, 220, 0.045) 1px, transparent 1px);
-  background-size: 48px 48px;
+    linear-gradient(rgba(255, 251, 234, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 251, 234, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
   mask-image: linear-gradient(
     to bottom,
     black 0%,
-    black 60%,
+    black 55%,
     transparent 100%
   );
 }
@@ -305,12 +432,12 @@ body {
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    color-mix(in oklab, var(--phosphor-bright) 10%, transparent) 50%,
+    color-mix(in oklab, var(--phosphor-bright) 8%, transparent) 50%,
     transparent 100%
   );
   background-size: 100% 220%;
-  animation: crt-scan 8s linear infinite;
-  opacity: 0.35;
+  animation: crt-scan 10s linear infinite;
+  opacity: 0.28;
   pointer-events: none;
 }
 
@@ -372,18 +499,29 @@ body {
   }
 }
 
+@keyframes headline-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .node-pulse {
   animation: lamp-pulse 2.8s ease-in-out infinite;
 }
 
 .crt-cursor {
   display: inline-block;
-  width: 0.55em;
-  height: 1.05em;
-  margin-left: 0.12em;
-  vertical-align: -0.12em;
+  width: 0.45em;
+  height: 0.95em;
+  margin-left: 0.1em;
+  vertical-align: -0.08em;
   background: var(--phosphor-bright);
-  box-shadow: 0 0 10px color-mix(in oklab, var(--phosphor) 55%, transparent);
+  box-shadow: 0 0 12px color-mix(in oklab, var(--phosphor) 55%, transparent);
   animation: crt-cursor 1.05s steps(1) infinite;
 }
 
@@ -402,17 +540,16 @@ body {
 }
 
 .section-fade-top {
-  box-shadow: inset 0 40px 40px -40px color-mix(in oklab, var(--keycap) 18%, transparent);
+  box-shadow: inset 0 40px 40px -40px rgba(0, 0, 0, 0.45);
 }
 
-/* Legacy class aliases → new surfaces */
 .surface-void {
   background: var(--crt);
   color: var(--text-on-crt);
 }
 
 .surface-deck {
-  background: color-mix(in oklab, var(--console) 55%, var(--console-deep));
+  background: var(--ink-soft);
   border-color: var(--bezel);
 }
 
@@ -420,9 +557,7 @@ body {
   background: var(--crt-elevated);
   border: 1px solid var(--crt-line);
   color: var(--text-on-crt);
-  box-shadow:
-    inset 0 0 0 1px color-mix(in oklab, var(--phosphor) 8%, transparent),
-    inset 0 12px 28px rgba(0, 0, 0, 0.28);
+  box-shadow: inset 0 12px 28px rgba(0, 0, 0, 0.28);
 }
 
 .surface-interactive {
@@ -444,20 +579,19 @@ body {
 }
 
 .ops-atmosphere {
-  /* Prefer console-hero; kept for gradual migration */
   background: var(--crt);
   color: var(--text-on-crt);
 }
 
 .ops-grid {
   background-image:
-    linear-gradient(rgba(216, 240, 220, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(216, 240, 220, 0.045) 1px, transparent 1px);
-  background-size: 48px 48px;
+    linear-gradient(rgba(255, 251, 234, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 251, 234, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
   mask-image: linear-gradient(
     to bottom,
     black 0%,
-    black 60%,
+    black 55%,
     transparent 100%
   );
 }
@@ -466,15 +600,20 @@ body {
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    color-mix(in oklab, var(--phosphor-bright) 10%, transparent) 50%,
+    color-mix(in oklab, var(--phosphor-bright) 8%, transparent) 50%,
     transparent 100%
   );
   background-size: 100% 220%;
-  animation: crt-scan 8s linear infinite;
-  opacity: 0.35;
+  animation: crt-scan 10s linear infinite;
+  opacity: 0.28;
 }
 
-/* Isometric clearance platforms — console modules */
+/* Paper band — light contrast section on dark site */
+.paper-band {
+  background: var(--paper);
+  color: var(--text-on-paper);
+}
+
 .path-board {
   position: relative;
   max-width: 100%;
@@ -492,7 +631,7 @@ body {
   border-radius: 2px;
   background: color-mix(in oklab, var(--bezel) 70%, var(--keycap));
   overflow: hidden;
-  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--keycap) 30%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--keycap) 20%, transparent);
 }
 
 .path-rail__ink {
@@ -513,7 +652,7 @@ body {
   height: 88px;
   flex-shrink: 0;
   perspective: 520px;
-  filter: drop-shadow(0 8px 14px rgba(28, 29, 26, 0.28));
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.4));
   transition:
     transform 180ms ease,
     filter 180ms ease;
@@ -532,7 +671,7 @@ body {
     145deg,
     color-mix(in oklab, var(--phosphor-bright) 35%, var(--phosphor)),
     var(--phosphor) 55%,
-    color-mix(in oklab, var(--phosphor) 70%, #14351c)
+    color-mix(in oklab, var(--phosphor) 70%, #3a1f18)
   );
   border: 1px solid color-mix(in oklab, var(--phosphor-bright) 50%, transparent);
   box-shadow: inset 0 1px 0 color-mix(in oklab, #fff 20%, transparent);
@@ -580,7 +719,7 @@ body {
   height: 22px;
   border-radius: 999px;
   background: var(--cleared);
-  color: var(--crt);
+  color: var(--ink);
   font-size: 12px;
   font-weight: 700;
 }
@@ -610,12 +749,12 @@ body {
 }
 
 .path-platform.is-locked .path-platform__top {
-  background: linear-gradient(135deg, #6b6558, #4a4a44);
+  background: linear-gradient(135deg, #3a3a36, #252522);
   border-color: var(--olive);
 }
 
 .path-platform.is-locked .path-platform__face {
-  background: #3a3830;
+  background: #222220;
 }
 
 .path-platform.is-locked .path-platform__glyph {
@@ -634,7 +773,7 @@ body {
 }
 
 .path-platform.is-cleared .path-platform__face {
-  background: color-mix(in oklab, var(--cleared) 50%, #1a1914);
+  background: color-mix(in oklab, var(--cleared) 50%, var(--ink));
 }
 
 .path-platform.is-active {

@@ -3,7 +3,10 @@ import { z } from "zod";
 import { getTopic } from "@/content";
 import { fetchCloudProgress, setTopicComplete } from "@/lib/progress-db";
 import { rateLimit } from "@/lib/rate-limit";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import {
+  isServiceRoleConfigured,
+  isSupabaseConfigured,
+} from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 
 const bodySchema = z.object({
@@ -12,7 +15,7 @@ const bodySchema = z.object({
 });
 
 export async function POST(request: Request) {
-  if (!isSupabaseConfigured()) {
+  if (!isSupabaseConfigured() || !isServiceRoleConfigured()) {
     return NextResponse.json(
       { error: "Supabase is not configured" },
       { status: 503 },

@@ -6,9 +6,10 @@ import {
   getCheckpointByBlock,
 } from "./checkpoints";
 import { topics00 } from "./topics-00";
+import { topics01 } from "./topics-01";
 import type { Topic } from "./types";
 
-const topics: Topic[] = [...topics00];
+const topics: Topic[] = [...topics00, ...topics01];
 
 export {
   badges,
