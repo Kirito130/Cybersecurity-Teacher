@@ -1,0 +1,687 @@
+@import "tailwindcss";
+
+:root {
+  /* Cassette console shell */
+  --console: #e4dccb;
+  --console-deep: #c9bda8;
+  --bezel: #b8ad98;
+  --keycap: #4a4a44;
+  --olive: #6b6558;
+
+  /* Recessed CRT screens — green-tube black */
+  --crt: #0f1410;
+  --crt-elevated: #161c18;
+  --crt-line: #2a3a2e;
+  --crt-line-strong: #4a6550;
+
+  /* P1 phosphor green (primary) — amber kept for warnings only */
+  --phosphor: #3dcc55;
+  --phosphor-bright: #6ef07a;
+  --phosphor-dim: #1f8a34;
+  --phosphor-soft: #14351c;
+  --cleared: #7dff9a;
+  --cleared-soft: #1a3d24;
+  --locked: #6b6558;
+  --warning: #e09a1b;
+  --danger: #c45c3e;
+
+  /* Text roles */
+  --text-on-console: #1c1d1a;
+  --text-on-console-muted: #4a4a44;
+  --text-on-crt: #d8f0dc;
+  --text-on-crt-muted: #8ab894;
+
+  /* Aliases — keep existing class names working during restyle */
+  --ink: var(--crt);
+  --ink-soft: #121914;
+  --ink-muted: var(--crt-elevated);
+  --panel: var(--console);
+  --panel-elevated: var(--console-deep);
+  --line: var(--bezel);
+  --line-strong: var(--keycap);
+  --text: var(--text-on-console);
+  --text-muted: var(--text-on-console-muted);
+  --text-on-ink: var(--text-on-crt);
+  --text-on-ink-muted: var(--text-on-crt-muted);
+  --signal: var(--phosphor);
+  --signal-hover: #52d868;
+  --signal-bright: var(--phosphor-bright);
+  --signal-soft: var(--phosphor-soft);
+  --xp: var(--phosphor);
+  --xp-soft: var(--phosphor-soft);
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+  --shadow-soft: 0 12px 28px rgba(28, 29, 26, 0.22);
+  --bloom-phosphor: 0 0 0 1px color-mix(in oklab, var(--phosphor) 40%, transparent),
+    0 0 14px color-mix(in oklab, var(--phosphor) 22%, transparent);
+}
+
+@theme inline {
+  --color-console: var(--console);
+  --color-console-deep: var(--console-deep);
+  --color-bezel: var(--bezel);
+  --color-keycap: var(--keycap);
+  --color-olive: var(--olive);
+  --color-crt: var(--crt);
+  --color-crt-elevated: var(--crt-elevated);
+  --color-crt-line: var(--crt-line);
+  --color-crt-line-strong: var(--crt-line-strong);
+  --color-phosphor: var(--phosphor);
+  --color-phosphor-bright: var(--phosphor-bright);
+  --color-phosphor-dim: var(--phosphor-dim);
+  --color-phosphor-soft: var(--phosphor-soft);
+  --color-text-on-console: var(--text-on-console);
+  --color-text-on-console-muted: var(--text-on-console-muted);
+  --color-text-on-crt: var(--text-on-crt);
+  --color-text-on-crt-muted: var(--text-on-crt-muted);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-muted: var(--ink-muted);
+  --color-panel: var(--panel);
+  --color-panel-elevated: var(--panel-elevated);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-on-ink: var(--text-on-ink);
+  --color-text-on-ink-muted: var(--text-on-ink-muted);
+  --color-signal: var(--signal);
+  --color-signal-hover: var(--signal-hover);
+  --color-signal-bright: var(--signal-bright);
+  --color-signal-soft: var(--signal-soft);
+  --color-xp: var(--xp);
+  --color-xp-soft: var(--xp-soft);
+  --color-cleared: var(--cleared);
+  --color-cleared-soft: var(--cleared-soft);
+  --color-locked: var(--locked);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --font-family-display: var(--font-display);
+  --font-family-body: var(--font-body);
+  --font-family-mono: var(--font-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: clip;
+  background: var(--console);
+  color: var(--text-on-console);
+  font-family: var(--font-body), system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+  background-image:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--console) 92%, #fff) 0%,
+      var(--console) 40%,
+      var(--console-deep) 100%
+    );
+}
+
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  input,
+  textarea,
+  select {
+    color: var(--text-on-crt);
+    background: var(--crt);
+    border: 1px solid var(--crt-line);
+  }
+}
+
+::selection {
+  background: color-mix(in oklab, var(--phosphor) 45%, transparent);
+  color: var(--crt);
+}
+
+:focus-visible {
+  outline: 2px solid var(--phosphor-bright);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.focus\:not-sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+.font-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+}
+
+.font-body {
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+/* —— Shell (putty hardware) —— */
+.shell-plate {
+  background: color-mix(in oklab, var(--console) 70%, var(--console-deep));
+  border: 1px solid var(--bezel);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, #fff 35%, transparent),
+    0 2px 0 color-mix(in oklab, var(--keycap) 18%, transparent);
+}
+
+.shell-recess {
+  background: var(--console-deep);
+  border: 1px solid color-mix(in oklab, var(--keycap) 35%, var(--bezel));
+  box-shadow: inset 0 2px 6px rgba(28, 29, 26, 0.18);
+}
+
+/* —— CRT screens —— */
+.crt-panel {
+  background: var(--crt-elevated);
+  border: 1px solid var(--crt-line);
+  color: var(--text-on-crt);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--phosphor) 8%, transparent),
+    inset 0 12px 28px rgba(0, 0, 0, 0.28);
+}
+
+.crt-interactive {
+  border: 1px solid var(--crt-line);
+  background: var(--crt-elevated);
+  color: var(--text-on-crt);
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.crt-interactive:hover {
+  border-color: color-mix(in oklab, var(--phosphor) 55%, var(--crt-line));
+  background: color-mix(in oklab, var(--crt-elevated) 88%, var(--phosphor) 12%);
+  box-shadow: var(--bloom-phosphor);
+  transform: translateY(-1px);
+}
+
+/* Outer inset via padding so the bezel never exceeds the viewport (mx + width:100% overflows). */
+.console-hero-frame {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding-inline: 0.75rem;
+  padding-block-start: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .console-hero-frame {
+    padding-inline: 1.5rem;
+    padding-block-start: 1rem;
+  }
+}
+
+.console-hero-frame--flush-bottom {
+  padding-block-end: 1.5rem;
+}
+
+.console-hero {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  background: var(--console-deep);
+  padding: 0.65rem;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, #fff 28%, transparent),
+    0 8px 24px rgba(28, 29, 26, 0.2);
+}
+
+.console-hero__screen {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  background-color: var(--crt);
+  background-image: linear-gradient(
+    165deg,
+    #0f1410 0%,
+    #152018 55%,
+    #0c1610 100%
+  );
+  border: 3px solid var(--keycap);
+  border-radius: 6px / 10px;
+  color: var(--text-on-crt);
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px color-mix(in oklab, var(--phosphor) 14%, transparent);
+}
+
+.crt-mesh {
+  background-image:
+    linear-gradient(rgba(216, 240, 220, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(216, 240, 220, 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 60%,
+    transparent 100%
+  );
+}
+
+.crt-scan {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in oklab, var(--phosphor-bright) 10%, transparent) 50%,
+    transparent 100%
+  );
+  background-size: 100% 220%;
+  animation: crt-scan 8s linear infinite;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+@keyframes crt-scan {
+  0% {
+    background-position: 0 -40%;
+  }
+  100% {
+    background-position: 0 140%;
+  }
+}
+
+@keyframes lamp-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--phosphor) 0%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 5px color-mix(in oklab, var(--phosphor) 28%, transparent);
+  }
+}
+
+@keyframes crt-cursor {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes radar-sweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes telemetry-scroll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes gauge-needle {
+  0%,
+  100% {
+    transform: rotate(-28deg);
+  }
+  50% {
+    transform: rotate(18deg);
+  }
+}
+
+.node-pulse {
+  animation: lamp-pulse 2.8s ease-in-out infinite;
+}
+
+.crt-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 0.12em;
+  vertical-align: -0.12em;
+  background: var(--phosphor-bright);
+  box-shadow: 0 0 10px color-mix(in oklab, var(--phosphor) 55%, transparent);
+  animation: crt-cursor 1.05s steps(1) infinite;
+}
+
+.radar-sweep {
+  transform-origin: center;
+  animation: radar-sweep 8s linear infinite;
+}
+
+.telemetry-scroll {
+  animation: telemetry-scroll 18s linear infinite;
+}
+
+.gauge-needle {
+  transform-origin: 50% 85%;
+  animation: gauge-needle 4.5s ease-in-out infinite;
+}
+
+.section-fade-top {
+  box-shadow: inset 0 40px 40px -40px color-mix(in oklab, var(--keycap) 18%, transparent);
+}
+
+/* Legacy class aliases → new surfaces */
+.surface-void {
+  background: var(--crt);
+  color: var(--text-on-crt);
+}
+
+.surface-deck {
+  background: color-mix(in oklab, var(--console) 55%, var(--console-deep));
+  border-color: var(--bezel);
+}
+
+.surface-plate {
+  background: var(--crt-elevated);
+  border: 1px solid var(--crt-line);
+  color: var(--text-on-crt);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--phosphor) 8%, transparent),
+    inset 0 12px 28px rgba(0, 0, 0, 0.28);
+}
+
+.surface-interactive {
+  border: 1px solid var(--crt-line);
+  background: var(--crt-elevated);
+  color: var(--text-on-crt);
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+.surface-interactive:hover {
+  border-color: color-mix(in oklab, var(--phosphor) 55%, var(--crt-line));
+  background: color-mix(in oklab, var(--crt-elevated) 88%, var(--phosphor) 12%);
+  box-shadow: var(--bloom-phosphor);
+  transform: translateY(-1px);
+}
+
+.ops-atmosphere {
+  /* Prefer console-hero; kept for gradual migration */
+  background: var(--crt);
+  color: var(--text-on-crt);
+}
+
+.ops-grid {
+  background-image:
+    linear-gradient(rgba(216, 240, 220, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(216, 240, 220, 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 60%,
+    transparent 100%
+  );
+}
+
+.ops-scan {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in oklab, var(--phosphor-bright) 10%, transparent) 50%,
+    transparent 100%
+  );
+  background-size: 100% 220%;
+  animation: crt-scan 8s linear infinite;
+  opacity: 0.35;
+}
+
+/* Isometric clearance platforms — console modules */
+.path-board {
+  position: relative;
+  max-width: 100%;
+  overflow-x: clip;
+  padding: 1rem 0 2rem;
+}
+
+.path-rail {
+  position: absolute;
+  top: 2rem;
+  bottom: 2rem;
+  left: 50%;
+  width: 4px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--bezel) 70%, var(--keycap));
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--keycap) 30%, transparent);
+}
+
+.path-rail__ink {
+  position: absolute;
+  inset: 0;
+  transform-origin: top;
+  background: linear-gradient(
+    180deg,
+    var(--phosphor-bright),
+    var(--phosphor) 55%,
+    color-mix(in oklab, var(--phosphor) 40%, transparent)
+  );
+}
+
+.path-platform {
+  position: relative;
+  width: 100px;
+  height: 88px;
+  flex-shrink: 0;
+  perspective: 520px;
+  filter: drop-shadow(0 8px 14px rgba(28, 29, 26, 0.28));
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.path-platform__top {
+  position: absolute;
+  left: 50%;
+  top: 36px;
+  width: 64px;
+  height: 64px;
+  margin-left: -32px;
+  transform: rotateX(58deg) rotateZ(45deg);
+  border-radius: 8px;
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklab, var(--phosphor-bright) 35%, var(--phosphor)),
+    var(--phosphor) 55%,
+    color-mix(in oklab, var(--phosphor) 70%, #14351c)
+  );
+  border: 1px solid color-mix(in oklab, var(--phosphor-bright) 50%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, #fff 20%, transparent);
+}
+
+.path-platform__face {
+  position: absolute;
+  left: 50%;
+  top: 68px;
+  width: 90px;
+  height: 14px;
+  margin-left: -45px;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in oklab, var(--phosphor) 40%, transparent),
+    transparent 70%
+  );
+}
+
+.path-platform__glyph {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 4px;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--crt) 90%, var(--phosphor));
+  border: 1px solid color-mix(in oklab, var(--phosphor-bright) 45%, transparent);
+  box-shadow: 0 0 12px color-mix(in oklab, var(--phosphor) 20%, transparent);
+  color: var(--text-on-crt);
+}
+
+.path-platform__check {
+  position: absolute;
+  z-index: 3;
+  right: 8px;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--cleared);
+  color: var(--crt);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.path-platform__lock {
+  position: absolute;
+  z-index: 3;
+  right: 10px;
+  top: 2px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--locked);
+  border-radius: 2px;
+  background: var(--crt-elevated);
+}
+
+.path-platform__lock::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: -7px;
+  width: 6px;
+  height: 7px;
+  border: 2px solid var(--locked);
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+}
+
+.path-platform.is-locked .path-platform__top {
+  background: linear-gradient(135deg, #6b6558, #4a4a44);
+  border-color: var(--olive);
+}
+
+.path-platform.is-locked .path-platform__face {
+  background: #3a3830;
+}
+
+.path-platform.is-locked .path-platform__glyph {
+  border-color: var(--crt-line);
+  box-shadow: none;
+  background: var(--crt-elevated);
+}
+
+.path-platform.is-cleared .path-platform__top {
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--cleared) 45%, #fff),
+    var(--cleared)
+  );
+  border-color: color-mix(in oklab, var(--cleared) 70%, #fff);
+}
+
+.path-platform.is-cleared .path-platform__face {
+  background: color-mix(in oklab, var(--cleared) 50%, #1a1914);
+}
+
+.path-platform.is-active {
+  animation: lamp-pulse 2.8s ease-in-out infinite;
+}
+
+.path-step:hover .path-platform:not(.is-locked) {
+  transform: translateY(-3px) scale(1.03);
+  filter: drop-shadow(0 12px 18px color-mix(in oklab, var(--phosphor) 25%, transparent));
+}
+
+@media (max-width: 767px) {
+  .path-rail {
+    left: 2.75rem;
+  }
+
+  .crt-scan,
+  .ops-scan {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .crt-scan,
+  .ops-scan,
+  .node-pulse,
+  .path-platform.is-active,
+  .crt-cursor,
+  .radar-sweep,
+  .telemetry-scroll,
+  .gauge-needle {
+    animation: none !important;
+  }
+
+  .crt-cursor {
+    opacity: 1;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
