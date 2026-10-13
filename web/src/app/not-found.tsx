@@ -1,21 +1,26 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { StampLink } from "@/kit/controls";
+import { Turns } from "@/kit/patterns";
 
 export default function NotFound() {
   return (
-    <div className="mx-auto flex min-h-[50vh] max-w-xl flex-col justify-center px-4 py-16 text-center">
-      <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-phosphor-dim">
-        Signal lost
-      </p>
-      <h1 className="mt-3 font-display text-4xl text-text-on-console">
-        Path not found
-      </h1>
-      <p className="mt-3 text-text-on-console-muted">
-        That segment is not on the CyberXP map.
-      </p>
-      <Link href="/roadmap" className="mt-6 inline-flex justify-center">
-        <Button>Back to roadmap</Button>
-      </Link>
-    </div>
+    <section className="sheet-night stage-fit stage overflow-hidden">
+      <div className="gutter stage-body grid items-center gap-10 py-[clamp(2rem,6vh,4rem)] lg:grid-cols-12">
+        <div className="lg:col-span-6">
+          <h1 className="display">Page not found.</h1>
+          <p className="lede measure mt-6">
+            Check the link, or open the chapter map.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <StampLink href="/roadmap">Open the map</StampLink>
+            <StampLink href="/" kind="ghost">
+              Home
+            </StampLink>
+          </div>
+        </div>
+        <div className="relative hidden min-h-[16rem] text-paper lg:col-span-5 lg:col-start-8 lg:block">
+          <Turns className="h-full w-full" />
+        </div>
+      </div>
+    </section>
   );
 }

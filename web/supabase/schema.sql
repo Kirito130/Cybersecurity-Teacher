@@ -8,6 +8,9 @@
 --   3. migrations/003_phase_c_catalog.sql
 --   4. migrations/004_phase_c_orgs.sql
 --   5. migrations/005_phase_c_evidence_certificates.sql
+--   6. migrations/006_support_inquiries.sql
+--   7. migrations/007_staff_roles.sql
+--   8. migrations/008_avatars_storage.sql
 --
 -- Then seed the content catalog (optional until CMS UI exists):
 --

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { TopicStudy } from "@/views/study-views";
 import { getTopic, topics } from "@/content";
-import { TopicView } from "@/components/topic-view";
 
 type PageProps = {
   params: Promise<{ topicId: string }>;
@@ -24,5 +24,5 @@ export default async function TopicPage({ params }: PageProps) {
   const { topicId } = await params;
   const topic = getTopic(topicId);
   if (!topic) notFound();
-  return <TopicView topic={topic} />;
+  return <TopicStudy topic={topic} />;
 }

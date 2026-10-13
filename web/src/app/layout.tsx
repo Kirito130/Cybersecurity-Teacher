@@ -1,30 +1,27 @@
-import type { Metadata } from "next";
-import { Figtree, IBM_Plex_Mono, Syne } from "next/font/google";
-import { AuthProvider } from "@/components/auth-provider";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
-import { ProgressProvider } from "@/components/progress-provider";
+import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
+import { Colophon, Mast } from "@/kit/chrome";
+import { PixelCursor } from "@/kit/pixel-cursor";
+import { AuthProvider } from "@/state/auth-provider";
+import { ProgressProvider } from "@/state/progress-provider";
 import "./globals.css";
 
-const display = Syne({
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  variable: "--font-display",
+/** Pixel monospace display face — Departure Mono (SIL OFL), via Free Faces. */
+const departure = localFont({
+  src: [{ path: "./fonts/DepartureMono-Regular.woff2", weight: "400", style: "normal" }],
+  variable: "--font-departure",
   display: "swap",
+  fallback: ["ui-monospace", "Cascadia Mono", "monospace"],
 });
 
-const body = Figtree({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-body",
+const hyperlegible = localFont({
+  src: [
+    { path: "./fonts/HyperlegibleSans-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/HyperlegibleSans-Bold.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-hyperlegible",
   display: "swap",
-});
-
-const mono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-mono",
-  display: "swap",
+  fallback: ["system-ui", "Segoe UI", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -33,10 +30,14 @@ export const metadata: Metadata = {
     template: "%s · CyberXP",
   },
   description:
-    "CyberXP is a game-style roadmap from zero tech background to advanced ethical hacking practice, with checkpoints, badges, and evidence-first learning.",
+    "CyberXP teaches ethical hacking through chapters, topics, subtopics, and tasks, with badges and evidence-first learning.",
   icons: {
     icon: "/favicon.svg",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#fbe4d6",
 };
 
 export default function RootLayout({
@@ -45,26 +46,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${display.variable} ${body.variable} ${mono.variable}`}
-    >
-      <body className="font-body antialiased">
+    <html lang="en" className={`${departure.variable} ${hyperlegible.variable}`}>
+      <body className="sheet-paper min-w-0">
         <AuthProvider>
           <ProgressProvider>
-            <div className="flex min-h-screen min-w-0 flex-col overflow-x-clip">
-              <a
-                href="#main"
-                className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-phosphor focus:px-3 focus:py-2 focus:font-medium focus:text-ink focus:outline-none"
-              >
-                Skip to content
-              </a>
-              <SiteHeader />
-              <main id="main" className="min-w-0 flex-1 overflow-x-clip">
+            <a href="#main" className="skip">
+              Skip to content
+            </a>
+            <div className="flex min-h-svh flex-col overflow-x-clip">
+              <Mast />
+              <main id="main" tabIndex={-1} className="min-w-0 flex-1 outline-none">
                 {children}
               </main>
-              <SiteFooter />
+              <Colophon />
             </div>
+            <PixelCursor />
           </ProgressProvider>
         </AuthProvider>
       </body>

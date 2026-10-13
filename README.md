@@ -4,28 +4,13 @@ A clearance-style learning path from zero technical background to advanced ethic
 
 Curriculum source: [`Ethical_Hacking_Penetration_Testing_Roadmap.md`](Ethical_Hacking_Penetration_Testing_Roadmap.md).
 
-## Phase 1
+## Current product surface
 
 - Next.js app in [`web/`](web/)
-- Console / Command Path UI shell
-- Interactive roadmap for Blocks 00–18
-- Fully detailed **Block 00**
-- Guest progress in browser `localStorage`
-
-## Phase 2
-
-- Supabase Auth (email/password) at `/auth/sign-up` and `/auth/sign-in`
-- Postgres schema Phases A–C in [`web/supabase/migrations/`](web/supabase/migrations/) (progress, XP, content catalog, orgs, evidence, certificates)
-- Cloud sync for signed-in users via service-role Route Handlers; local → cloud migration when cloud is empty
-- Server-side quiz/practical scoring APIs with per-user rate limits
-- Guest mode still works without Supabase env vars
-
-## Phase 3 (current)
-
-- Fully detailed **Block 01** (hardware/OS, everyday fluency, VMs + recovery)
-- Checkpoint 01 quiz + practical gate; isolation question is critical for pass
-- Lab Builder badge after clearing Gate 01
-- Blocks 02–18 remain roadmap outlines until expanded
+- **Chapters 00–18** fully detailed (topics, resources, tasks, checkpoints)
+- Roadmap UI uses **Chapter** wording; routes live at `/chapters/[id]` (`/blocks/*` redirects)
+- Supabase Auth + cloud progress (guest/local mode without env vars)
+- Badges for every chapter gate plus milestones
 
 ## Run locally
 
@@ -38,8 +23,6 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-Without Supabase env vars, the app runs in guest/local mode.
-
 ### Supabase setup
 
 1. Create a project at [supabase.com](https://supabase.com).
@@ -49,9 +32,12 @@ Without Supabase env vars, the app runs in guest/local mode.
 5. Auth → URL configuration: add `http://localhost:3000/auth/callback` to redirect URLs.
 6. Restart `npm run dev`.
 
+### Regenerating curriculum from the markdown
+
 ```bash
-npm run build
-npm start
+cd web
+node scripts/extract-curriculum.mjs
+node scripts/finalize-content.mjs
 ```
 
 ## Practice rules

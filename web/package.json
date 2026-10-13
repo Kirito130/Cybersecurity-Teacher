@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed:content": "tsx scripts/seed-content-catalog.ts"
+    "seed:content": "tsx scripts/seed-content-catalog.ts",
+    "content:extract": "node scripts/extract-curriculum.mjs && node scripts/finalize-content.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

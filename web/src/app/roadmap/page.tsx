@@ -1,34 +1,34 @@
 import type { Metadata } from "next";
-import { RoadmapPath } from "@/components/roadmap-path";
-import { RoadmapHeroArt } from "@/components/graphics/roadmap-hero-art";
+import { ChapterBoard } from "@/kit/board";
+import { sumHours } from "@/kit/chapter";
+import { blocks } from "@/content";
 
 export const metadata: Metadata = {
-  title: "Roadmap",
+  title: "Map",
 };
 
 export default function RoadmapPage() {
+  const core = blocks.filter((block) => !block.isSpecialist);
+  const side = blocks.filter((block) => block.isSpecialist);
+  const hours = sumHours(core);
+
   return (
-    <div className="bg-console text-text-on-console">
-      <div className="console-hero-frame">
-        <div className="console-hero">
-          <div className="console-hero__screen relative overflow-hidden px-5 py-10 md:px-10 md:py-14">
-            <RoadmapHeroArt className="pointer-events-none absolute top-2 right-0 hidden w-56 max-w-[45%] opacity-80 md:block lg:right-8 lg:w-72" />
-            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-phosphor">
-              Training map
-            </p>
-            <h1 className="mt-3 max-w-xl font-display text-4xl text-text-on-crt md:text-5xl">
-              The CyberXP path
-            </h1>
-            <p className="mt-4 max-w-2xl text-text-on-crt-muted">
-              Guests keep progress in this browser. Sign in to sync checkpoints
-              and badges to your CyberXP account.
+    <article className="sheet-paper">
+      <section className="stage-fit stage">
+        <div className="gutter stage-body py-[clamp(1.25rem,4vh,3rem)]">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <h1 className="display">Chapters 00 through 18.</h1>
+            <p className="fine measure">
+              The map is public. Sign in to open a chapter. Core chapters{" "}
+              {hours[0]}–{hours[1]} hours. Chapters 16–18 are optional
+              specialties.
             </p>
           </div>
+          <div className="mt-8 min-h-0">
+            <ChapterBoard core={core} side={side} />
+          </div>
         </div>
-      </div>
-      <div className="relative mx-auto max-w-5xl px-4 py-10 md:px-6 md:py-14">
-        <RoadmapPath />
-      </div>
-    </div>
+      </section>
+    </article>
   );
 }

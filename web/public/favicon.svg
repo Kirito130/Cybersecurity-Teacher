@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect width="64" height="64" rx="10" fill="#141414"/>
-  <path d="M8 14h48v36H8z" fill="#FFFBEA"/>
-  <path d="M8 14l4-4h40l4 4M8 50l4 4h40l4-4" stroke="#FF7145" stroke-width="3"/>
-  <text x="32" y="38" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="14" font-weight="800" fill="#141414" letter-spacing="1">XP</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges"><rect width="16" height="16" fill="#261fb3"/><rect y="13" width="16" height="3" fill="#0c0950"/><path fill="#fbe4d6" d="M2 4h1v2h-1zM6 4h1v2h-1zM3 6h1v1h-1zM5 6h1v1h-1zM4 7h1v1h-1zM3 8h1v1h-1zM5 8h1v1h-1zM2 9h1v2h-1zM6 9h1v2h-1zM9 4h1v7h-1zM10 4h3v1h-3zM10 7h3v1h-3zM13 5h1v2h-1z"/></svg>
