@@ -47,4 +47,7 @@ next-env.d.ts
 /supabase
 
 # references
-/references
+../references
+../cursor_cybersecurity_learning_roadmap.md
+../Ethical_Hacking_Penetration_Testing_Roadmap.md
+../.cursor_rules
