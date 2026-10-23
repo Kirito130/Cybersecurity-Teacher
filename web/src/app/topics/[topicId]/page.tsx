@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { Wait } from "@/kit/controls";
 import { TopicStudy } from "@/views/study-views";
 import { getTopic, topics } from "@/content";
 
@@ -20,9 +22,27 @@ export async function generateMetadata({
   return { title: topic.title };
 }
 
-export default async function TopicPage({ params }: PageProps) {
+export default function TopicPage({ params }: PageProps) {
+  return (
+    <Suspense fallback={<TopicFallback />}>
+      <TopicContent params={params} />
+    </Suspense>
+  );
+}
+
+async function TopicContent({ params }: PageProps) {
   const { topicId } = await params;
   const topic = getTopic(topicId);
   if (!topic) notFound();
   return <TopicStudy topic={topic} />;
+}
+
+function TopicFallback() {
+  return (
+    <section className="sheet-paper stage justify-center">
+      <div className="gutter">
+        <Wait label="Opening topic" />
+      </div>
+    </section>
+  );
 }
