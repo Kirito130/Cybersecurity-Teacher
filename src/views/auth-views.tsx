@@ -87,7 +87,7 @@ function SignInForm() {
       lede="Home, the map, and badges stay open. Chapters and topics need a session."
     >
       {!configured ? (
-        <ErrorNote body="Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in web/.env.local, apply the migrations, then restart the app." />
+        <ErrorNote body="Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local, apply the migrations, then restart the app." />
       ) : (
         <form className="space-y-5" onSubmit={(event) => void onSubmit(event)}>
           <Field id="email" label="Email">

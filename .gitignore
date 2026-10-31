@@ -43,11 +43,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# supabase
-/supabase
+# supabase local CLI artifacts
+supabase/.temp
+supabase/.branches
 
-# references
-../references
-../cursor_cybersecurity_learning_roadmap.md
-../Ethical_Hacking_Penetration_Testing_Roadmap.md
-../.cursor_rules
+# references (parent folder copies; keep in-repo curriculum files tracked)
+/references
+cursor_cybersecurity_learning_roadmap.md
+# Ethical_Hacking_Penetration_Testing_Roadmap.md stays tracked when present at repo root
+.cursor
+

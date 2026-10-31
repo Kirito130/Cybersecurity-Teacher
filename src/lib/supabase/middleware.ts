@@ -54,9 +54,19 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const result = await Promise.race([
+      supabase.auth.getUser(),
+      new Promise<never>((_, reject) => {
+        setTimeout(() => reject(new Error("supabase_auth_timeout")), 4000);
+      }),
+    ]);
+    user = result.data.user;
+  } catch {
+    // Unreachable/misconfigured Supabase must not hang or crash every request.
+    return gated ? redirectToSignIn(request, supabaseResponse) : supabaseResponse;
+  }
 
   if (gated && !user) {
     return redirectToSignIn(request, supabaseResponse);

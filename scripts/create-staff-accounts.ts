@@ -1,9 +1,9 @@
 /**
  * Creates or updates the admin and developer sign-in accounts.
- * Reads web/.env.local. Prints passwords only when an account is created.
+ * Reads .env.local. Prints passwords only when an account is created.
  * Does not print the service-role key.
  *
- * Run from web/: node --env-file=.env.local --import tsx scripts/create-staff-accounts.ts
+ * Run from repo root: node --env-file=.env.local --import tsx scripts/create-staff-accounts.ts
  */
 import { createClient } from "@supabase/supabase-js";
 import { randomBytes } from "node:crypto";
@@ -30,7 +30,7 @@ async function main() {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !serviceKey) {
     throw new Error(
-      "Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in web/.env.local",
+      "Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env.local",
     );
   }
 

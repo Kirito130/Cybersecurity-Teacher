@@ -1,7 +1,7 @@
 /**
  * Seeds Phase C content_* tables from TypeScript curriculum.
  *
- * Usage (from web/):
+ * Usage (from repo root):
  *   npm run seed:content
  *
  * Requires NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY in .env.local

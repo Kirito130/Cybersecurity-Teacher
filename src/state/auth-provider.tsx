@@ -49,12 +49,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setAuthLoading(false);
       return;
     }
-    const supabase = createClient();
-    const {
-      data: { user: next },
-    } = await supabase.auth.getUser();
-    setUser(next);
-    setAuthLoading(false);
+    try {
+      const supabase = createClient();
+      const {
+        data: { user: next },
+      } = await supabase.auth.getUser();
+      setUser(next);
+    } catch {
+      setUser(null);
+    } finally {
+      setAuthLoading(false);
+    }
   }, [configured]);
 
   useEffect(() => {
@@ -63,11 +68,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const supabase = createClient();
     let cancelled = false;
 
-    void supabase.auth.getUser().then(({ data }) => {
-      if (cancelled) return;
-      setUser(data.user);
-      setAuthLoading(false);
-    });
+    void supabase.auth
+      .getUser()
+      .then(({ data }) => {
+        if (cancelled) return;
+        setUser(data.user);
+        setAuthLoading(false);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setUser(null);
+        setAuthLoading(false);
+      });
 
     const {
       data: { subscription },
@@ -84,8 +96,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(async () => {
     if (!configured) return;
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+    } catch {
+      // Local session clear still proceeds below.
+    }
     setUser(null);
     setRole(null);
     setDisplayName(null);
@@ -111,24 +127,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     const supabase = createClient();
     void (async () => {
-      const { data } = await supabase
-        .from("profiles")
-        .select("role, display_name, avatar_url")
-        .eq("id", userId)
-        .maybeSingle();
-      if (cancelled) return;
-      setRole(parseAccountRole(data?.role));
-      setDisplayName(
-        typeof data?.display_name === "string" && data.display_name.trim()
-          ? data.display_name.trim()
-          : null,
-      );
-      setAvatarUrl(
-        typeof data?.avatar_url === "string" && data.avatar_url.trim()
-          ? data.avatar_url.trim()
-          : null,
-      );
-      setRoleFor(userId);
+      try {
+        const { data } = await supabase
+          .from("profiles")
+          .select("role, display_name, avatar_url")
+          .eq("id", userId)
+          .maybeSingle();
+        if (cancelled) return;
+        setRole(parseAccountRole(data?.role));
+        setDisplayName(
+          typeof data?.display_name === "string" && data.display_name.trim()
+            ? data.display_name.trim()
+            : null,
+        );
+        setAvatarUrl(
+          typeof data?.avatar_url === "string" && data.avatar_url.trim()
+            ? data.avatar_url.trim()
+            : null,
+        );
+      } catch {
+        if (cancelled) return;
+        setRole(null);
+        setDisplayName(null);
+        setAvatarUrl(null);
+      } finally {
+        if (!cancelled) setRoleFor(userId);
+      }
     })();
     return () => {
       cancelled = true;
